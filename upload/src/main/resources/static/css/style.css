@@ -1,0 +1,69 @@
+body, html {
+	margin: 0 auto;
+	height: 100%;
+}
+
+i {
+	vertical-align: middle;
+}
+
+.bg-image {
+	height: 100%;
+	margin: 0;
+	
+	background-image: url("/img/background.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.titleFont {
+    font-family: 'Amatic SC', cursive;
+}
+
+.buttonFont {
+    font-family: 'Neucha', cursive;
+}
+
+.textFont {
+    font-family: 'Patrick Hand', cursive;
+}
+
+.generateButton {
+	font-family: 'Courier New', monospace;
+	
+	height: 4em;
+	width: 12em;
+	
+	margin-left: 45%;
+	margin-top: 15%;
+	
+	background-color: #B1CED4;
+	border: 2px solid black;
+}
+
+.codeSection {
+	margin-top: 5%;
+	
+	text-align: center;
+}
+
+.fa-file {
+	font-size: 50px;
+}
+
+#code {
+	font-family: 'Courier New', monospace;
+	
+	font-size: 50px;
+	
+	background-color: lightgray;
+}
+
+#qrCode {
+	margin-left: 45%;
+}
+
+#existingFiles {
+	text-align: center;
+}
