@@ -11,9 +11,9 @@
 	</parent>
 	<groupId>io.aliza</groupId>
 	<artifactId>aliza</artifactId>
-	<version>0.1</version>
+	<version>aliza-0.0.1-SNAPSHOT</version>
 	<name>aliza</name>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<description>File Upload App</description>
 
 	<properties>
