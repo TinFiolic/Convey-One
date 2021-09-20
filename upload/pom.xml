@@ -9,11 +9,11 @@
 		<version>2.4.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>social</groupId>
-	<artifactId>equalization</artifactId>
+	<groupId>io.aliza</groupId>
+	<artifactId>aliza</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>equalization</name>
-	<description>Equalization social network</description>
+	<name>aliza</name>
+	<description>File Upload App</description>
 
 	<properties>
 		<java.version>15</java.version>
