@@ -92,7 +92,7 @@ public class MainServiceImpl implements MainService {
 	@Override
 	public String generateCode(String ipAddress) {
 
-		String code = generateString(8);
+		String code = generateString(5);
 
 		// If the map already contains the same code, generate new code
 		if (ipAddressCodeMap.containsValue(code))
