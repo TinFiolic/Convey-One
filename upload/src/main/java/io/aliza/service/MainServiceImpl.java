@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import javax.crypto.BadPaddingException;
@@ -188,7 +189,7 @@ public class MainServiceImpl implements MainService {
 
 	@Override
 	public void sessionTimer() {
-		for (var codeTime : codeTimeMap.entrySet()) {
+		for (Entry<String, Long> codeTime : codeTimeMap.entrySet()) {
 			String code = codeTime.getKey();
 			Long time = codeTime.getValue();
 
