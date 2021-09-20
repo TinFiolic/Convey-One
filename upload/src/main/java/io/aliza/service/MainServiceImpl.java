@@ -41,7 +41,7 @@ public class MainServiceImpl implements MainService {
 	public void upload(MultipartFile file, String ipAddress) {
 		String code = ipAddressCodeMap.get(ipAddress);
 
-		if (code == null || code.isEmpty() || code.isBlank())
+		if (code == null || code.isEmpty())
 			return;
 
 		File codeDirectory = new File(filesDirectory + code);
