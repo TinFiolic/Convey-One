@@ -17,7 +17,7 @@
 
 	<properties>
 		<java.version>15</java.version>
-		<start-class>social.equalization.EqualizationApplication</start-class>
+		<start-class>io.aliza.controller.AlizaApplication</start-class>
 	</properties>
 
 	<dependencies>
