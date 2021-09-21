@@ -14,7 +14,7 @@
 		<div id="existingFiles">
 			<c:if test="${not empty '${files}'}">
 				<script>
-					$("#generateCode").hide();
+// 					$("#generateCode").hide();
 				</script>
 				<c:forEach items="${files}" var="file" varStatus="loop">
 					<a href="download/${code}/${loop.index}"> <i
@@ -78,9 +78,8 @@
 
 		$(document).ready(function() {
 			// 		    Check if user already has an active file sharing session
-			if ("${code}".length > 1 && "${code}" != "NULL") {
+
 				$("#files").show();
-				$("#generateCode").hide();
 
 				$(".codeSection").show();
 
@@ -88,7 +87,7 @@
 				$("#files").attr("action", "/upload/${code}");
 
 				$("#existingFiles").show();
-			}
+			
 		});
 
 		//		Dropzone initialization
