@@ -17,7 +17,7 @@
 	<description>File Upload App</description>
 
 	<properties>
-		<start-class>io.aliza.controller.AlizaApplication</start-class>
+		<start-class>io.aliza.AlizaApplication</start-class>
 		<java.version>1.8</java.version>
 	</properties>
 
