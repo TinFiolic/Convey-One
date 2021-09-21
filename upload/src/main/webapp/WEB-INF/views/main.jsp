@@ -11,8 +11,11 @@
 
 		<br>
 
-		<div id="existingFiles" hidden="true">
+		<div id="existingFiles">
 			<c:if test="${not empty '${files}'}">
+				<script>
+					$("#generateCode").hide();
+				</script>
 				<c:forEach items="${files}" var="file" varStatus="loop">
 					<a href="download/${code}/${loop.index}"> <i
 						class="fa fa-file file-download" data-id="${loop.index}"></i>
@@ -35,6 +38,10 @@
 				<br>
 				<form action="/upload/${code}" class="dropzone" id="files"
 					hidden="true"></form>
+					
+					<script>
+						qrcode.makeCode(window.location.host + "/join/{code}");
+					</script>
 			</c:if>
 		</div>
 
@@ -81,9 +88,6 @@
 				$("#files").attr("action", "/upload/${code}");
 
 				$("#existingFiles").show();
-
-				// 			    Generate new QR Code
-				qrcode.makeCode(window.location.host + "/join/{code}");
 			}
 		});
 

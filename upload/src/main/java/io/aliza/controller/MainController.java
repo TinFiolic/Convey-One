@@ -62,19 +62,32 @@ public class MainController {
 	public ModelAndView filesByCode(@PathVariable String joinCode, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("main");
 
-		String code = mainService.codeForIpExists(request.getRemoteAddr());
-
-		if (code != null && joinCode != null) {
-			List<File> files = mainService.getFiles(code);
-
-			// If the code host joined their own code session
-			if (code.equals(joinCode)) {
-				modelAndView.addObject("isHost", true); // Iskoristit ovo na frontu da si user moze brisat i dodavat jos
-														// fileova
+		if(joinCode != null && !joinCode.isEmpty()) {
+			List<File> files = mainService.getFiles(joinCode);
+			
+			if(files != null && !files.isEmpty())
+				modelAndView.addObject("files", files);
+			
+			modelAndView.addObject("code", joinCode);
+			
+			String code = mainService.codeForIpExists(request.getRemoteAddr());
+			
+			if(code != null && !code.isEmpty() && code.equals(joinCode)) {
+				modelAndView.addObject("isHost", true);
 			}
-
-			modelAndView.addObject("code", code);
-			modelAndView.addObject("files", files);
+		} else {
+			String code = mainService.codeForIpExists(request.getRemoteAddr());
+			
+			if(code != null && !code.isEmpty()) {			
+				List<File> files = mainService.getFiles(code);
+				
+				if(files != null && !files.isEmpty())
+					modelAndView.addObject("files", files);
+				
+				modelAndView.addObject("code", code);
+				
+				modelAndView.addObject("isHost", true);
+			}
 		}
 
 		modelAndView.addObject("fromLink", true);
