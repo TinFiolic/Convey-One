@@ -1,39 +1,31 @@
 <head>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link
-	href="https://fonts.googleapis.com/css2?family=Amatic+SC&family=Neucha&family=Patrick+Hand&display=swap"
-	rel="stylesheet">
-
-<!-- jQuery library -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="/libraries/dropzone-5.7.0/dist/dropzone.js"></script>
-<script src="/libraries/qrGenerator/qrcode.js"></script>
-<!-- Latest compiled JavaScript -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-<meta charset="UTF-8">
-<meta name="keywords"
-	content="social, network, music, musician, instrument, sound, audio, forum">
-<meta name="description" content="A social network for musicians!">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="author" content="Tin Fiolić">
-
-<link rel="stylesheet" type="text/css" href="/css/style.css" />
-<link rel="stylesheet" type="text/css"
-	href="/libraries/dropzone-5.7.0/dist/dropzone.css" />
-
-<link rel="shortcut icon" href="/img/favicon.ico" />
-
-<title>Equalization social network</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	
+	<link href="https://fonts.googleapis.com/css2?family=Amatic+SC&family=Neucha&family=Patrick+Hand&display=swap" rel="stylesheet">
+	
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="/libraries/dragndrop/jquery-simple-upload.js"></script>
+	<script src="/libraries/qrGenerator/qrcode.js"></script>
+	
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	
+	<meta charset="UTF-8">
+	<meta name="keywords" content="social, network, music, musician, instrument, sound, audio, forum">
+	<meta name="description" content="A social network for musicians!">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Tin Fiolić">
+	
+	<link rel="stylesheet" type="text/css" href="/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="/libraries/dropzone-5.7.0/dist/dropzone.css" />
+	
+	<link rel="shortcut icon" href="/img/favicon.ico" />
+	
+	<title>Equalization social network</title>
 </head>

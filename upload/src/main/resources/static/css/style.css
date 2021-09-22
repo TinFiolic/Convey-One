@@ -1,69 +1,119 @@
 body, html {
 	margin: 0 auto;
 	height: 100%;
+	
+	color: #bdc1c6;
+	
+	font-variant: small-caps;
+	
+	background-color: #121212; 
 }
 
-i {
+.button {
+	background-color: #39383D;
+
+    font-size: Max(30px, 1em);
+    font-family: inherit;
+    
+    font-variant: small-caps;
+    
+    padding: 0.25em 0.8em;
+    
+    border: 2px solid var(--input-border);
+    border-radius: 4px;
+}
+
+.button:active {
+	outline: none;
+    transform: translateY(2px);
+}
+
+.button:hover, .textbox:hover {
+	background-color: #323136;
+}
+
+.textbox {
+	background-color: #39383D;
+
+    font-size: Max(30px, 1em);
+    font-family: inherit;
+    
+    padding: 0.25em 0.5em;
+    
+    border: 2px solid var(--input-border);
+    border-radius: 4px;
+}
+
+.textbox:focus {
+	outline: none;
+}
+
+.startScreenCenter {
+	margin-left: 35%;
+	margin-top: 10%;
+	min-width: 100px;
+/* 	position: fixed; */
+/* 	top: 35%; */
+/* 	left: 38%; */
+}	
+
+hr {
+    display: block;
+    
+    height: 1px;
+    
+    border: 0;
+    border-top: 1px solid #bdc1c6;
+    
+    margin: 1em 0;
+    
+    padding: 0;
+}
+
+.about {
+	margin-top: 3em;
+	padding: 20px 25px;
+	
+	font-variant: normal;
+	
+	background-color: #39383D;
+	
+	width: 33em;
+	
+	border-radius: 4px;
+}	
+
+.footer {
+    position: fixed;
+    
+    left: 0;
+    bottom: 0;
+    
+    width: 100%;
+    height: 5%;
+    
+    padding: 0.7em;
+    
+    background-color: #39383D;
+    
+    border-top: 1px solid #bdc1c6;
+    
+    text-align: center;
+}
+
+.footer span {
+	margin-bottom: 300px;
+	font-size: 20px;
+	
+	pointer-events: none;
+}
+
+.footer:hover > span {
+	opacity: 0.6;
+	transition: opacity 0.1s linear;
+}
+
+.footer i {
+	font-size: 30px;
 	vertical-align: middle;
-}
-
-.bg-image {
-	height: 100%;
-	margin: 0;
-	
-	background-image: url("/img/background.png");
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-}
-
-.titleFont {
-    font-family: 'Amatic SC', cursive;
-}
-
-.buttonFont {
-    font-family: 'Neucha', cursive;
-}
-
-.textFont {
-    font-family: 'Patrick Hand', cursive;
-}
-
-.generateButton {
-	font-family: 'Courier New', monospace;
-	
-	height: 4em;
-	width: 12em;
-	
-	margin-left: 45%;
-	margin-top: 15%;
-	
-	background-color: #B1CED4;
-	border: 2px solid black;
-}
-
-.codeSection {
-	margin-top: 5%;
-	
-	text-align: center;
-}
-
-.fa-file {
-	font-size: 50px;
-}
-
-#code {
-	font-family: 'Courier New', monospace;
-	
-	font-size: 50px;
-	
-	background-color: lightgray;
-}
-
-#qrCode {
-	margin-left: 45%;
-}
-
-#existingFiles {
-	text-align: center;
 }

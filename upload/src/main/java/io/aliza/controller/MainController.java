@@ -161,7 +161,7 @@ public class MainController {
 	}
 
 	@GetMapping("/download/{code}/{index}")
-	public void download(@PathVariable int index, @PathVariable String code, HttpServletResponse response)
+	public void download(@PathVariable String code, @PathVariable int index, HttpServletResponse response)
 			throws IOException {
 
 		Map<byte[], String> byteStringMap = mainService.getFile(index, code);
