@@ -1,3 +1,9 @@
 <div class="footer">
-	<span> <i class="fa fa-github"></i> github </span>
+	<ul>
+		<li> <a href="https://github.com/TinFiolic" target="_blank"> <i class="fa fa-github"></i> github </a> </li>
+		<li> <a href="https://www.linkedin.com/in/tin-fiolić-78748520a" target="_blank"><i class="fa fa-linkedin"></i> linkedin </a> </li>
+		<li> Created by <b>Tin Fiolic</b> </li>
+		<li> <a href="https://github.com/TinFiolic" target="_blank"><i class="fa fa-twitter"></i> twitter </a> </li>
+		<li> <a href="https://github.com/TinFiolic" target="_blank"><i class="fa fa-facebook"></i> facebook </a> </li>
+	</ul>
 </div>
