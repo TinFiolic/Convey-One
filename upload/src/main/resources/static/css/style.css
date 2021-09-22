@@ -49,12 +49,11 @@ body, html {
 }
 
 .startScreenCenter {
-	margin-left: 35%;
-	margin-top: 10%;
-	min-width: 100px;
-/* 	position: fixed; */
-/* 	top: 35%; */
-/* 	left: 38%; */
+	position: relative;
+	top: 25%;
+	left: 38%;
+	
+	width: 465px;
 }	
 
 hr {
@@ -65,7 +64,8 @@ hr {
     border: 0;
     border-top: 1px solid #bdc1c6;
     
-    margin: 1em 0;
+    margin: 1em 0.5em;   
+    margin-left: 0px;
     
     padding: 0;
 }
