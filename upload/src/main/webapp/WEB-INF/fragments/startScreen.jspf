@@ -4,7 +4,7 @@
 	<input type="text" id="enterCode" class="textbox"> <button class="button" id="joinSession">join</button>
 	
 	<div class="about">
-		<p><b>NAME</b> is a free-to-use service which allows you to transfer your files and links securely 
+		<p><b>NAJBOLJI IKAD UPLOAD</b> is a free-to-use service which allows you to transfer your files and links securely 
 		in between multiple devices during the duration of your session (<b>5 minutes</b>).
 		You may also share your code with other people and let them join your session and
 		download the files you've provided.</p>
