@@ -21,6 +21,8 @@ body, html {
     
     border: 2px solid var(--input-border);
     border-radius: 4px;
+    
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .button:active {
@@ -29,7 +31,10 @@ body, html {
 }
 
 .button:hover, .textbox:hover {
-	background-color: #323136;
+/* 	background-color: #323136; */
+
+	background-color: #9900cc; 
+	color: #FFFFFF;
 }
 
 .textbox {
@@ -42,10 +47,15 @@ body, html {
     
     border: 2px solid var(--input-border);
     border-radius: 4px;
+    
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .textbox:focus {
 	outline: none;
+	background-color: #9900cc; 
+	
+	color: #FFFFFF;
 }
 
 .startScreenCenter {
