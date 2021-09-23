@@ -19,7 +19,7 @@ body, html {
     
     font-variant: small-caps;
     
-    padding: 0.25em 0.8em;
+    padding: 0.3em 0.8em;
     
     border: 2px solid var(--input-border);
     border-radius: 4px;
@@ -87,6 +87,15 @@ hr {
 
     -webkit-filter: drop-shadow(1px 1px 0 #bdc1c6) drop-shadow(-1px -1px 0 #bdc1c6);
     filter:drop-shadow(1px 1px 0 #bdc1c6) drop-shadow(-1px -1px 0 #bdc1c6);
+}
+
+.logo:hover {
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-image: url("../img/logo.png");
+
+    -webkit-filter: drop-shadow(1px 1px 0 #FFFFFF) drop-shadow(-1px -1px 0 #FFFFFF);
+    filter:drop-shadow(1px 1px 0 #FFFFFF) drop-shadow(-1px -1px 0 #FFFFFF);
 }
 
 .wrapper {
@@ -171,7 +180,7 @@ hr {
 }
 
 .fa-github:hover {
-	color: #1B1F23;
+	color: #FFFFFF;
 }
 
 .tinfiolic:hover {
