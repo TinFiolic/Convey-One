@@ -130,7 +130,7 @@ hr {
 .footer {
     position: fixed;
     
-    left: -1.5em;
+    left: 0;
     bottom: 0;
     
     width: 100%;
@@ -160,6 +160,8 @@ hr {
 
 .footer ul {
 	list-style-type: none;
+		
+	margin-right: 5em;
 }
 
 .footer li {
