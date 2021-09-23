@@ -47,6 +47,10 @@ body, html {
     
     padding: 0.1em 0.55em 0.3em;
     
+    width: 10em;
+    
+    text-align: center; 
+    
     border: 2px solid var(--input-border);
     border-radius: 4px;
     
