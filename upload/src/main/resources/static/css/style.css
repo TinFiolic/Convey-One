@@ -55,7 +55,7 @@ body, html {
 
 .textbox:focus {
 	outline: none;
-	background-color: #E57A44; 
+	background-color: #bd5d2d; 
 	
 	color: #FFFFFF;
 }
@@ -157,9 +157,34 @@ hr {
 	display: inline;
 }
 
-.footer li:hover {
-	opacity: 0.6;
-	transition: opacity 0.1s linear;
+.fa-linkedin:hover {
+	color: #0077B5;
+}
+
+.fa-facebook:hover {
+	color: #4867AA;
+}
+
+
+.fa-twitter:hover {
+	color: #5DA9DD;
+}
+
+.fa-github:hover {
+	color: #1B1F23;
+}
+
+.tinfiolic:hover {
+	animation: animate-color 5s forwards; 
+	animation-iteration-count: infinite;
+}
+
+@keyframes animate-color {
+  0%   { color: #BA3B46; }
+  30%   { color: #FFFFFF; }
+  60% { color: #5DA9DD; }
+  90%   { color: #FFFFFF; }
+  100%   { color: #BA3B46; }
 }
 
 a { 
