@@ -16,11 +16,11 @@
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	
-	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="keywords" content="social, network, music, musician, instrument, sound, audio, forum">
 	<meta name="description" content="A social network for musicians!">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="author" content="Tin Fiolić">
+	<meta name="author" content="Tin Fioli&#263">
 	
 	<link rel="stylesheet" type="text/css" href="/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="/libraries/dropzone-5.7.0/dist/dropzone.css" />
