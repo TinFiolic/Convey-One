@@ -1,24 +1,46 @@
 <div class="wrapper">
 	<div class="formContent">
-		<form>
-			<div class="logo"></div>
+		<div class="logo"></div>
+		
+		<button class="button" id="newSession" style="padding: 0.1em 4.3em 0.3em;">start a new session</button>
+
+		<hr>
+
+		<input type="text" id="enterCode" class="textbox"> <button class="button" id="joinSession" style="width: 7em;">join</button>
+
+		<div class="about">
+			<p><b>TRANSFEREE</b> is a free-to-use service which allows you to transfer your files and links securely 
+			in between multiple devices during the duration of your session (<b>5 minutes</b>).
+			You may also share your code with other people and let them join your session and
+			download the files you've provided.</p>
 			
-			<button class="button" id="newSession" style="padding: 0.1em 4.3em 0.3em;">start a new session</button>
-
-			<hr>
-
-			<input type="text" id="enterCode" class="textbox"> <button class="button" id="joinSession" style="width: 7em;">join</button>
-
-			<div class="about">
-				<p><b>TRANSFEREE</b> is a free-to-use service which allows you to transfer your files and links securely 
-				in between multiple devices during the duration of your session (<b>5 minutes</b>).
-				You may also share your code with other people and let them join your session and
-				download the files you've provided.</p>
-				
-				<p>Uploaded files are instantly encrypted before being saved, and they only exist
-				for the duration of the session, after which they, along with the generated code,
-				are permanently deleted and there is <b>NO</b> way of restoring them.</p>
-			</div>
-		</form>
+			<p>Uploaded files are instantly encrypted before being saved, and they only exist
+			for the duration of the session, after which they, along with the generated code,
+			are permanently deleted and there is <b>NO</b> way of restoring them.</p>
+		</div>
 	</div>
 </div>
+
+<script>
+	$("#newSession").click(function() {
+		//TODO: Napisi lijepe poruke i poppupovi i to
+		var jqxhr = $.ajax("/code")
+		  .done(function(data, textStatus, jqXHR) {
+			location.reload();
+		  })
+		  .fail(function() {
+
+		  })
+		  .always(function() {
+
+		  });	
+	});
+
+	$("#joinSession").click(function() {
+		event.preventDefault(); 
+
+// 		TODO: check jel postoji taj kod i napravit da su poruke lijepe poppup i to
+		if($("#enterCode").val().length > 4 && $("#enterCode").val().length < 6)
+			location.replace("/join/" + $("#enterCode").val());
+	});
+</script>
