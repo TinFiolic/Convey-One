@@ -24,7 +24,6 @@
 	<meta name="author" content="Tin Fioli&#263">
 	
 	<link rel="stylesheet" type="text/css" href="/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="/libraries/dropzone-5.7.0/dist/dropzone.css" />
 	
 	<link rel="shortcut icon" href="/img/favicon.ico?v=2" />
 	

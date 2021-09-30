@@ -6,6 +6,7 @@
 <%@ include file="../fragments/header.jspf"%>
 
 	<body>
+		<%@ include file="../fragments/footer.jspf"%>
 		
 		<c:if test="${fn:length(code) ne 5}">
 			<div id="startScreenFragment">
@@ -18,8 +19,6 @@
 				<%@ include file="../fragments/sessionFragment.jspf"%>
 			</div>
 		</c:if>
-	
-		<%@ include file="../fragments/footer.jspf"%>
 	</body>
 	
 	<script>

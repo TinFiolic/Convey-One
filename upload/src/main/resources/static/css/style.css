@@ -4,8 +4,6 @@ body, html {
 	
 	color: #bdc1c6;
 	
-	font-variant: small-caps;
-	
 	background-color: #121212; 
 }
 
@@ -88,6 +86,7 @@ hr {
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-image: url("../img/logo.png");
+	margin-top: 8em;
 
     -webkit-filter: drop-shadow(1px 1px 0 #bdc1c6) drop-shadow(-1px -1px 0 #bdc1c6);
     filter:drop-shadow(1px 1px 0 #bdc1c6) drop-shadow(-1px -1px 0 #bdc1c6);
@@ -131,27 +130,21 @@ hr {
 	border-radius: 4px;
 }	
 
-.footer {
-    position: fixed;
-    
-    left: 0;
-    bottom: 0;
-    
+.footer {      
     width: 100%;
     height: 3.5%;
     
-    padding: 0.2em;
-    
+    padding: 0.2em;    
     padding-bottom: 2em;
     
-    background-color: #39383D;
-    
-    border-top: 1px solid #bdc1c6;
-    
     text-align: center;
+    
+    margin-left: -4em;
 }
 
 .footer li {
+	float: left;
+	    
 	font-size: 20px;
 	
 	padding-left: 2em;
@@ -164,8 +157,6 @@ hr {
 
 .footer ul {
 	list-style-type: none;
-		
-	margin-right: 5em;
 }
 
 .footer li {
@@ -224,4 +215,102 @@ a:hover {
 a:active {
     text-decoration: none;
     color: inherit; 
+}
+
+#timer {
+	font-size: 45px; 
+	font-weight: bold;
+		
+	color: #BA3B46;
+}
+
+#dropZone {
+	margin-top: 1em;
+	margin-right: 15em;
+	
+	padding-top: 1em;
+	padding-bottom: 1em;
+	
+	width: 100%;
+	
+	background-color: #39383D;
+	border: 2px dashed #9A9DA1;
+	
+    border-radius: 4px;
+    
+    white-space: nowrap;
+}
+
+#dropZone:hover {
+	border: 2px dashed #B95C2D;
+	box-shadow: inset 0 0 10px #000000;
+}
+
+#dropFiles {
+	color: #39383D;
+	padding-left: 12em;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+#uploadedText {
+	width: 100%;
+	height: 5em;
+	
+	resize: none;
+	
+	background-color: #39383D;
+
+    font-size: Max(16px, 1em);
+    font-family: inherit;
+    
+    padding: 0.4em;
+        
+    color: #bdc1c6;
+    
+    border: 2px solid var(--input-border);
+    border-radius: 4px;
+    
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#uploadedText:focus {
+	outline: none;
+	
+	background-color: #262528; 	
+	color: #FFFFFF;
+}
+
+#uploadedText:hover {
+	background-color: #262528;
+	color: #FFFFFF;
+}
+
+.charCounter {
+	float: right;
+	font-size: 12px;
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+.codeAndQR:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#code {
+	font-size: 60px;
+	font-weight: bold;
+	
+	color: #BA3B46;
+}
+
+.codeArea {
+	margin-top: -0.5em;
 }
