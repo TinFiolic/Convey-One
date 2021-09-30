@@ -149,12 +149,7 @@ public class MainController {
 	}
 
 	@GetMapping("/code")
-	public String generateCode(HttpServletRequest request) {
-		
-		//Invalidate the last session and create a new one
-		request.getSession().invalidate();
-		request.getSession();
-		
+	public String generateCode(HttpServletRequest request) {		
 		request.getSession().setMaxInactiveInterval(300);
 		String codeFromIp = mainService.codeForIpExists(mainService.getUniqueIdentifier(request));
 		
