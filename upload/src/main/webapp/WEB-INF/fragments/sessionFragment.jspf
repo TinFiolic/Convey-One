@@ -1,7 +1,9 @@
 <div class="wrapper">
 	<div class="formContent">
 	
-		<div id="uploadedFiles" class="about">
+		<div class="logo"></div>
+		
+		<div id="uploadedFiles">
 			No files uploaded.
 		</div>
 		
