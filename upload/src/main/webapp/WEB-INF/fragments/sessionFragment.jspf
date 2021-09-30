@@ -37,7 +37,7 @@
 			</div>
 		</div>
 		<hr>
-		<button class="button" id="endSession" style="padding: 0.1em 5.5em 0.3em;">end session</button>
+		<button class="button" id="endSession" style="padding: 0.1em 6.3em 0.3em;">end session</button>
 	</div>
 </div>
 
