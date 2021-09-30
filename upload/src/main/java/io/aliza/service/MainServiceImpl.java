@@ -19,7 +19,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -33,15 +32,15 @@ public class MainServiceImpl implements MainService {
 
 	static String filesDirectory = System.getProperty("user.dir") + "/files/";
 
-	Map<String, String> ipAddressCodeMap = new HashMap<>();
+	Map<String, String> sessionIdCodeMap = new HashMap<>();
 	Map<String, String> codeSecretMap = new HashMap<>();
 	Map<String, Long> codeTimeMap = new HashMap<>();
 
 	static Logger logger = LoggerFactory.getLogger(MainServiceImpl.class);
 
 	@Override
-	public void upload(MultipartFile file, String ipAddress) {
-		String code = ipAddressCodeMap.get(ipAddress);
+	public void upload(MultipartFile file, String sessionId) {
+		String code = sessionIdCodeMap.get(sessionId);
 
 		if (code == null || code.isEmpty())
 			return;
@@ -91,15 +90,15 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
-	public String generateCode(String ipAddress) {
+	public String generateCode(String sessionId) {
 
 		String code = generateString(5);
 
 		// If the map already contains the same code, generate new code
-		if (ipAddressCodeMap.containsValue(code))
-			generateCode(ipAddress);
+		if (sessionIdCodeMap.containsValue(code))
+			generateCode(sessionId);
 
-		ipAddressCodeMap.put(ipAddress, code);
+		sessionIdCodeMap.put(sessionId, code);
 		codeSecretMap.put(code, generateString(32));
 		codeTimeMap.put(code, System.currentTimeMillis());
 
@@ -111,9 +110,9 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
-	public String codeForIpExists(String ipAddress) {
-		if (ipAddressCodeMap.containsKey(ipAddress))
-			return ipAddressCodeMap.get(ipAddress);
+	public String codeForSessionIdExists(String sessionId) {
+		if (sessionIdCodeMap.containsKey(sessionId))
+			return sessionIdCodeMap.get(sessionId);
 		else
 			return null;
 	}
@@ -179,7 +178,7 @@ public class MainServiceImpl implements MainService {
 	@Override
 	public void endSession(String code) {
 		codeTimeMap.remove(code);
-		ipAddressCodeMap.values().remove(code);
+		sessionIdCodeMap.values().remove(code);
 		codeSecretMap.remove(code);
 
 		File file = new File(filesDirectory + code);
@@ -199,7 +198,7 @@ public class MainServiceImpl implements MainService {
 			// If now is greater then time of code generation + 5 minutes
 			if (now > (time + (1000 * 300))) {
 				codeTimeMap.remove(code);
-				ipAddressCodeMap.values().remove(code);
+				sessionIdCodeMap.values().remove(code);
 				codeSecretMap.remove(code);
 
 				File file = new File(filesDirectory + code);

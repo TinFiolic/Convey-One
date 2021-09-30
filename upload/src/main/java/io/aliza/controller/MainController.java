@@ -41,7 +41,7 @@ public class MainController {
 	public ModelAndView mainPageLoad(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("main");
 
-		String code = mainService.codeForIpExists(request.getSession().getId());
+		String code = mainService.codeForSessionIdExists(request.getSession().getId());
 
 		List<File> files = new ArrayList<>();
 		if (code != null)
@@ -55,7 +55,7 @@ public class MainController {
 		}
 
 		
-		modelAndView.addObject("ip", request.getSession().getId());
+		modelAndView.addObject("sessionId", request.getSession().getId());
 		modelAndView.addObject("fromLink", false);
 		return modelAndView;
 	}
@@ -72,13 +72,13 @@ public class MainController {
 			
 			modelAndView.addObject("code", joinCode);
 			
-			String code = mainService.codeForIpExists(request.getSession().getId());
+			String code = mainService.codeForSessionIdExists(request.getSession().getId());
 			
 			if(code != null && !code.isEmpty() && code.equals(joinCode)) {
 				modelAndView.addObject("isHost", true);
 			}
 		} else {
-			String code = mainService.codeForIpExists(request.getSession().getId());
+			String code = mainService.codeForSessionIdExists(request.getSession().getId());
 			
 			if(code != null && !code.isEmpty()) {			
 				List<File> files = mainService.getFiles(code);
@@ -104,10 +104,10 @@ public class MainController {
 			return 3;
 		}
 
-		String codeFromIp = mainService.codeForIpExists(request.getSession().getId());
+		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
 
-		if (codeFromIp != null && !codeFromIp.isEmpty()) {
-			if (code.equals(codeFromIp)) {
+		if (codeFromSessionId != null && !codeFromSessionId.isEmpty()) {
+			if (code.equals(codeFromSessionId)) {
 				
 				// Check is max upload amount is exceeded in the session
 				List<File> uploadedFiles = mainService.getFiles(code);
@@ -151,14 +151,14 @@ public class MainController {
 	@GetMapping("/code")
 	public String generateCode(HttpServletRequest request) {		
 		request.getSession().setMaxInactiveInterval(300);
-		String codeFromIp = mainService.codeForIpExists(request.getSession().getId());
+		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
 		
-		if(codeFromIp == null || codeFromIp.isEmpty()) {
+		if(codeFromSessionId == null || codeFromSessionId.isEmpty()) {
 			String code = mainService.generateCode(request.getSession().getId());
 			logger.info(code + " - generation a new session!");
 			return code;
 		} else {
-			logger.info(codeFromIp + " - still an active session, therefore a new session cannot be created!");
+			logger.info(codeFromSessionId + " - still an active session, therefore a new session cannot be created!");
 			return "";
 		}
 	}
@@ -205,10 +205,10 @@ public class MainController {
 	public Integer delete(@PathVariable int index, @PathVariable String code, HttpServletResponse response,
 			HttpServletRequest request) throws IOException {
 
-		String codeFromIp = mainService.codeForIpExists(request.getSession().getId());
+		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
 
-		if (codeFromIp != null && !codeFromIp.isEmpty()) {
-			if (code.equals(codeFromIp)) {
+		if (codeFromSessionId != null && !codeFromSessionId.isEmpty()) {
+			if (code.equals(codeFromSessionId)) {
 				mainService.deleteFile(index, code);
 				logger.info(code + " - successfully deleted a file.");
 				return 0;
@@ -226,10 +226,10 @@ public class MainController {
 	public Integer endSession(@PathVariable String code, HttpServletResponse response, HttpServletRequest request)
 			throws IOException {
 
-		String codeFromIp = mainService.codeForIpExists(request.getSession().getId());
+		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
 
-		if (codeFromIp != null && !codeFromIp.isEmpty()) {
-			if (code.equals(codeFromIp)) {
+		if (codeFromSessionId != null && !codeFromSessionId.isEmpty()) {
+			if (code.equals(codeFromSessionId)) {
 				mainService.endSession(code);
 				logger.info(code + " - successfully ended a session.");
 				return 0;

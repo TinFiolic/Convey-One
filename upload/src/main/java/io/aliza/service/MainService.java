@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MainService {
-	void upload(MultipartFile file, String ipAddress);
+	void upload(MultipartFile file, String sessionId);
 
-	String generateCode(String ipAddress);
+	String generateCode(String sessionId);
 
-	String codeForIpExists(String ipAddress);
+	String codeForSessionIdExists(String sessionId);
 
 	List<File> getFiles(String code);
 
