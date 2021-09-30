@@ -31,5 +31,5 @@ public interface MainService {
 
 	List<File> listFilesForFolder(File folder);
 
-	String getIpAddr(HttpServletRequest request);
+	String getUniqueIdentifier(HttpServletRequest request);
 }

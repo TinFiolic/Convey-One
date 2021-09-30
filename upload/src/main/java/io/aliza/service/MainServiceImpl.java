@@ -236,7 +236,7 @@ public class MainServiceImpl implements MainService {
 	}
 	
 	@Override
-	public String getIpAddr(HttpServletRequest request) {  
+	public String getUniqueIdentifier(HttpServletRequest request) {  
 		
 	    String ip = request.getHeader("x-forwarded-for");  
 	    
@@ -252,7 +252,7 @@ public class MainServiceImpl implements MainService {
 	        ip = request.getRemoteAddr();  
 	    }  
 	    
-	    return ip;  
+	    return ip + request.getHeader("User-Agent") + request.getSession().getId();  
 	}  
 
 }
