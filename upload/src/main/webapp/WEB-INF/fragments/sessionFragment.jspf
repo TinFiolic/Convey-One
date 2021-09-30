@@ -9,13 +9,14 @@
 		
 		<label>
 			<div id="dropZone" class="dropZone">
-				<p>Drop your files or click to browse</p>
-				
-				<p> <input type="file" name="file" multiple="true" id="dropFiles"> </p>
-				
-				<p>(Max. 20 files, total max. size 20 MB)</p>
+				<label>
+					<p>Drop your files or click to browse</p>
+					
+					<p> <input type="file" name="file" multiple="true" id="dropFiles"> </p>
+					
+					<p>(Max. 20 files, total max. size 20 MB)</p>
+				</label>
 			</div>
-		</label>
 		<hr>
 		
 		<textarea id="uploadedText" maxlength="128" placeholder="You can paste/type anything here, press the button below, and the text will be uploaded to your session to access from another device!"></textarea>
