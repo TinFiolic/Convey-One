@@ -41,7 +41,7 @@ public class MainController {
 	public ModelAndView mainPageLoad(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("main");
 
-		String code = mainService.codeForIpExists(request.getRemoteAddr());
+		String code = mainService.codeForIpExists(request.getHeader("X-FORWARDED-FOR"));
 
 		List<File> files = new ArrayList<>();
 		if (code != null)
@@ -70,13 +70,13 @@ public class MainController {
 			
 			modelAndView.addObject("code", joinCode);
 			
-			String code = mainService.codeForIpExists(request.getRemoteAddr());
+			String code = mainService.codeForIpExists(request.getHeader("X-FORWARDED-FOR"));
 			
 			if(code != null && !code.isEmpty() && code.equals(joinCode)) {
 				modelAndView.addObject("isHost", true);
 			}
 		} else {
-			String code = mainService.codeForIpExists(request.getRemoteAddr());
+			String code = mainService.codeForIpExists(request.getHeader("X-FORWARDED-FOR"));
 			
 			if(code != null && !code.isEmpty()) {			
 				List<File> files = mainService.getFiles(code);
@@ -102,7 +102,7 @@ public class MainController {
 			return 3;
 		}
 
-		String codeFromIp = mainService.codeForIpExists(request.getRemoteAddr());
+		String codeFromIp = mainService.codeForIpExists(request.getHeader("X-FORWARDED-FOR"));
 
 		if (codeFromIp != null && !codeFromIp.isEmpty()) {
 			if (code.equals(codeFromIp)) {
@@ -133,7 +133,7 @@ public class MainController {
 					}
 				}
 				
-				mainService.upload(file, request.getRemoteAddr());
+				mainService.upload(file, request.getHeader("X-FORWARDED-FOR"));
 				logger.info(code + " - successfully uploaded a file.");
 				return 0;
 			} else {
@@ -148,10 +148,10 @@ public class MainController {
 
 	@GetMapping("/code")
 	public String generateCode(HttpServletRequest request) {
-		String codeFromIp = mainService.codeForIpExists(request.getRemoteAddr());
+		String codeFromIp = mainService.codeForIpExists(request.getHeader("X-FORWARDED-FOR"));
 		
 		if(codeFromIp == null || codeFromIp.isEmpty()) {
-			String code = mainService.generateCode(request.getRemoteAddr());
+			String code = mainService.generateCode(request.getHeader("X-FORWARDED-FOR"));
 			logger.info(code + " - generation a new session!");
 			return code;
 		} else {
@@ -202,7 +202,7 @@ public class MainController {
 	public Integer delete(@PathVariable int index, @PathVariable String code, HttpServletResponse response,
 			HttpServletRequest request) throws IOException {
 
-		String codeFromIp = mainService.codeForIpExists(request.getRemoteAddr());
+		String codeFromIp = mainService.codeForIpExists(request.getHeader("X-FORWARDED-FOR"));
 
 		if (codeFromIp != null && !codeFromIp.isEmpty()) {
 			if (code.equals(codeFromIp)) {
@@ -223,7 +223,7 @@ public class MainController {
 	public Integer endSession(@PathVariable String code, HttpServletResponse response, HttpServletRequest request)
 			throws IOException {
 
-		String codeFromIp = mainService.codeForIpExists(request.getRemoteAddr());
+		String codeFromIp = mainService.codeForIpExists(request.getHeader("X-FORWARDED-FOR"));
 
 		if (codeFromIp != null && !codeFromIp.isEmpty()) {
 			if (code.equals(codeFromIp)) {
