@@ -21,7 +21,7 @@
 		
 		<button class="button" id="updateText" style="padding: 0.1em 6.3em 0.3em;">update text</button>
 		
-		<hr><br>
+		<hr>
 		
 		<div class="codeAndQR">
 			<div id="qrcode" class="column"></div>
