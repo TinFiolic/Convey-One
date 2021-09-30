@@ -54,7 +54,7 @@ public class MainController {
 			modelAndView.addObject("files", files);
 		}
 
-
+		
 		modelAndView.addObject("ip", mainService.getIpAddr(request));
 		modelAndView.addObject("fromLink", false);
 		return modelAndView;
