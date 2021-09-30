@@ -65,7 +65,7 @@
 	});
 
 	var qrcode = new QRCode(document.getElementById("qrcode"), {
-	    text: "join/${code}",
+	    text: window.location.host + "join/${code}",
 	    width: 250,
 	    height: 250,
 	    colorDark : "#fff",
