@@ -19,7 +19,7 @@
 		<textarea id="uploadedText" maxlength="128" placeholder="You can paste/type anything here, press the button below, and the text will be uploaded to your session to access from another device!"></textarea>
 		<p class="charCounter">0 / 128 characters used</p>
 		
-		<button class="button" id="updateText" style="padding: 0.1em 6.1em 0.3em;">update text</button>
+		<button class="button" id="updateText" style="padding: 0.1em 6.3em 0.3em;">update text</button>
 		
 		<hr><br>
 		
