@@ -232,6 +232,7 @@ public class MainController {
 			if (code.equals(codeFromSessionId)) {
 				mainService.endSession(code);
 				logger.info(code + " - successfully ended a session.");
+				request.getSession().invalidate();
 				return 0;
 			} else {
 				logger.info(code + " - no authority to end this session!");
