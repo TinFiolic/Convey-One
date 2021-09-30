@@ -234,11 +234,5 @@ public class MainServiceImpl implements MainService {
 		}
 		return outputBytes;
 	}
-	
-	@Override
-	public String getUniqueIdentifier(HttpServletRequest request) {  
-			
-		return request.getSession().getId();
-	}  
 
 }

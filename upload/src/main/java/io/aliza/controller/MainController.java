@@ -41,7 +41,7 @@ public class MainController {
 	public ModelAndView mainPageLoad(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("main");
 
-		String code = mainService.codeForIpExists(mainService.getUniqueIdentifier(request));
+		String code = mainService.codeForIpExists(request.getSession().getId());
 
 		List<File> files = new ArrayList<>();
 		if (code != null)
@@ -55,7 +55,7 @@ public class MainController {
 		}
 
 		
-		modelAndView.addObject("ip", mainService.getUniqueIdentifier(request));
+		modelAndView.addObject("ip", request.getSession().getId());
 		modelAndView.addObject("fromLink", false);
 		return modelAndView;
 	}
@@ -72,13 +72,13 @@ public class MainController {
 			
 			modelAndView.addObject("code", joinCode);
 			
-			String code = mainService.codeForIpExists(mainService.getUniqueIdentifier(request));
+			String code = mainService.codeForIpExists(request.getSession().getId());
 			
 			if(code != null && !code.isEmpty() && code.equals(joinCode)) {
 				modelAndView.addObject("isHost", true);
 			}
 		} else {
-			String code = mainService.codeForIpExists(mainService.getUniqueIdentifier(request));
+			String code = mainService.codeForIpExists(request.getSession().getId());
 			
 			if(code != null && !code.isEmpty()) {			
 				List<File> files = mainService.getFiles(code);
@@ -104,7 +104,7 @@ public class MainController {
 			return 3;
 		}
 
-		String codeFromIp = mainService.codeForIpExists(mainService.getUniqueIdentifier(request));
+		String codeFromIp = mainService.codeForIpExists(request.getSession().getId());
 
 		if (codeFromIp != null && !codeFromIp.isEmpty()) {
 			if (code.equals(codeFromIp)) {
@@ -135,7 +135,7 @@ public class MainController {
 					}
 				}
 				
-				mainService.upload(file, mainService.getUniqueIdentifier(request));
+				mainService.upload(file, request.getSession().getId());
 				logger.info(code + " - successfully uploaded a file.");
 				return 0;
 			} else {
@@ -151,10 +151,10 @@ public class MainController {
 	@GetMapping("/code")
 	public String generateCode(HttpServletRequest request) {		
 		request.getSession().setMaxInactiveInterval(300);
-		String codeFromIp = mainService.codeForIpExists(mainService.getUniqueIdentifier(request));
+		String codeFromIp = mainService.codeForIpExists(request.getSession().getId());
 		
 		if(codeFromIp == null || codeFromIp.isEmpty()) {
-			String code = mainService.generateCode(mainService.getUniqueIdentifier(request));
+			String code = mainService.generateCode(request.getSession().getId());
 			logger.info(code + " - generation a new session!");
 			return code;
 		} else {
@@ -205,7 +205,7 @@ public class MainController {
 	public Integer delete(@PathVariable int index, @PathVariable String code, HttpServletResponse response,
 			HttpServletRequest request) throws IOException {
 
-		String codeFromIp = mainService.codeForIpExists(mainService.getUniqueIdentifier(request));
+		String codeFromIp = mainService.codeForIpExists(request.getSession().getId());
 
 		if (codeFromIp != null && !codeFromIp.isEmpty()) {
 			if (code.equals(codeFromIp)) {
@@ -226,7 +226,7 @@ public class MainController {
 	public Integer endSession(@PathVariable String code, HttpServletResponse response, HttpServletRequest request)
 			throws IOException {
 
-		String codeFromIp = mainService.codeForIpExists(mainService.getUniqueIdentifier(request));
+		String codeFromIp = mainService.codeForIpExists(request.getSession().getId());
 
 		if (codeFromIp != null && !codeFromIp.isEmpty()) {
 			if (code.equals(codeFromIp)) {

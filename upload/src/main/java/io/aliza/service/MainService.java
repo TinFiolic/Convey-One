@@ -30,6 +30,4 @@ public interface MainService {
 	byte[] fileProcessor(int cipherMode, String key, byte[] inputBytes, File outputFile, boolean needOutput);
 
 	List<File> listFilesForFolder(File folder);
-
-	String getUniqueIdentifier(HttpServletRequest request);
 }
