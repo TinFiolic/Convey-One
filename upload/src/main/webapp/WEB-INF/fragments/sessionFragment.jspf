@@ -6,7 +6,7 @@
 		<div id="uploadedFiles">
 			No files uploaded.
 		</div>
-		
+
 		<label>
 			<div id="dropZone" class="dropZone">
 				<label>

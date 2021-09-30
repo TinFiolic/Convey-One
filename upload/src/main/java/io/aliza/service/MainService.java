@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MainService {
@@ -28,4 +30,6 @@ public interface MainService {
 	byte[] fileProcessor(int cipherMode, String key, byte[] inputBytes, File outputFile, boolean needOutput);
 
 	List<File> listFilesForFolder(File folder);
+
+	String getIpAddr(HttpServletRequest request);
 }
