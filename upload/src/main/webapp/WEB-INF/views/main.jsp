@@ -22,7 +22,7 @@
 	</body>
 	
 	<script>
-
+		document.body.style.backgroundImage = "url('/img/dark_bg1.png')";
 	</script>
 </html>
 
