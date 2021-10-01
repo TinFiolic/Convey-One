@@ -36,6 +36,12 @@ public class MainController {
 	static Integer maxFileSize = 20971520;	// 20MB in bytes
 	static Integer maxFileAmount = 20;
 	static Integer maxFileNameLength = 30;
+	
+	@GetMapping("/error")
+	public ModelAndView errorPage(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView("error");
+		return modelAndView;
+	}
 
 	@GetMapping("/")
 	public ModelAndView mainPageLoad(HttpServletRequest request) {

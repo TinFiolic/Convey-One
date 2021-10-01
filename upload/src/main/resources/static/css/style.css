@@ -57,7 +57,7 @@ body, html {
 
 .textbox:focus {
 	outline: none;
-	background-color: #bd5d2d; 
+	background-color: #262528; 
 	
 	color: #FFFFFF;
 }
@@ -314,3 +314,4 @@ input[type="file"] {
 .codeArea {
 	margin-top: -0.5em;
 }
+
