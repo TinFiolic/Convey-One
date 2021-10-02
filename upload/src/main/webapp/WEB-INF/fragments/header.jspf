@@ -6,11 +6,11 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	
-	<link href="https://fonts.googleapis.com/css2?family=Amatic+SC&family=Neucha&family=Patrick+Hand&display=swap" rel="stylesheet">
-	
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="/libraries/dragndrop/jquery-simple-upload.js"></script>
+	
+<!-- 	<script src="/libraries/dragndrop/jquery-simple-upload.js"></script> -->
+	<script src="/libraries/dropzone/dropzone.js"></script>
 	<script src="/libraries/qrGenerator/qrcode.js"></script>
 	
 	<!-- Latest compiled JavaScript -->

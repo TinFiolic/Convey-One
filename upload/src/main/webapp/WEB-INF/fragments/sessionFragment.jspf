@@ -1,22 +1,15 @@
 <div class="wrapper">
 	<div class="formContent">
-	
-		<div class="logo"></div>
 		
 		<div id="uploadedFiles">
 			No files uploaded.
 		</div>
-
-		<label>
-			<div id="dropZone" class="dropZone">
-				<label>
-					<p>Drop your files or click to browse</p>
-					
-					<p> <input type="file" name="file" multiple="true" id="dropFiles"> </p>
-					
-					<p>(Max. 20 files, total max. size 20 MB)</p>
-				</label>
-			</div>
+			
+		<form action="/upload/${code}" class="dropzone dropZone" id="dropzoneForm">
+<!-- 			<p style="pointer-events: none;">Drop your files or click to browse</p> -->
+<!-- 			<p style="pointer-events: none;">(Max. 20 files, total max. size 20 MB)</p> -->
+		</form>
+		
 		<hr>
 		
 		<textarea id="uploadedText" maxlength="128" placeholder="You can paste/type anything here, press the button below, and the text will be uploaded to your session to access from another device!"></textarea>
@@ -45,9 +38,21 @@
 </div>
 
 <script>
-	$('#dropFiles').simpleUpload({
-		  dropZone: '#dropZone'
-	})
+	Dropzone.options.dropzoneForm = {
+		addRemoveLinks : true,
+		maxFiles : 20,
+		maxFilesize : 20971520,
+		disablePreviews: true,
+		init : function() {
+			this.on("error", function(file, message) {
+				console.log("Error uploading file " + file.name + " - " + message);
+				this.removeFile(file);
+			});
+			this.on("addedfile", function(file) {
+				console.log("Uploading file " + file.name + " with size " + (file.size/1024/1024).toFixed(2) + " MB");
+			});
+		}
+	};
 	
 	$('#uploadedText').on('keyup keydown', characterCount);
 
