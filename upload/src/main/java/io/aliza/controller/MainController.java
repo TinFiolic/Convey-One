@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.aliza.service.MainService;
 
@@ -103,14 +107,19 @@ public class MainController {
 	}
 
 	@PostMapping("/upload/{code}")
-	public Integer upload(@PathVariable String code, @RequestParam("file") MultipartFile file,
-			HttpServletRequest request) {
+	public String upload(@PathVariable String code, @RequestParam("file") MultipartFile file,
+			HttpServletRequest request) throws JsonProcessingException {
+		
+		Map<String, String> JSONResponse = new HashMap();
+		ObjectMapper objectMapper = new ObjectMapper();
+		
 		if (file.getSize() > maxFileSize) {
 			logger.info(code + " - uploaded file too big!");
-			return 3;
+			return file.getName() + " file size is too big (" + file.getSize()/1024/1024 + " MB)!";
 		}
 
 		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
+		Long totalFileSizes = 0L;
 
 		if (codeFromSessionId != null && !codeFromSessionId.isEmpty()) {
 			if (code.equals(codeFromSessionId)) {
@@ -124,33 +133,40 @@ public class MainController {
 						fileSizes += fileIterator.length();
 					}
 					
+					totalFileSizes = fileSizes;
 					if(fileSizes > maxFileSize) {
 						logger.info(code + " -  total file sizes exceed session limit!");
-						return 4;
+						return "Total size of uploaded files is too big (" + fileSizes/1024/1024 + " MB)!";
 					}
 					
 					// Include the file currently being uploaded into the equation
 					if(uploadedFiles.size() + 1 > maxFileAmount) {
 						logger.info(code + " - too many total files in session!");
-						return 5;
+						return "Total number of uploaded files is too big (" + uploadedFiles.size() + ")!";
 					}
 					
 					if(file.getName().length() > maxFileNameLength) {
 						logger.info(code + " - file name is too long!");
-						return 6;
+						return "Name of uploaded file is too long (" + file.getName().length() + " characters)!";
 					}
 				}
 				
 				mainService.upload(file, request.getSession().getId());
 				logger.info(code + " - successfully uploaded a file.");
-				return 0;
+				JSONResponse.put("code", "0");
+				JSONResponse.put("message", "Successfully uploaded a file! " + uploadedFiles.size() + " files currently in session, total size " + totalFileSizes/1024/1024 + " MB.");
+				JSONResponse.put("numberOfFiles", String.valueOf(uploadedFiles.size()));
+				JSONResponse.put("totalFileSizes", String.valueOf(totalFileSizes));
+				
+				String json = objectMapper.writeValueAsString(JSONResponse);
+				return json;
 			} else {
 				logger.info(code + " - no authority to upload to this session!");
-				return 1;
+				return "You do not have authority to upload files to this session!";
 			}
 		} else {
 			logger.info(code + " - uploading to an invalid session!");
-			return 2;
+			return "Session is invalid!";
 		}
 	}
 

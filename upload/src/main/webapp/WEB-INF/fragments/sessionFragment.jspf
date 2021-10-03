@@ -44,14 +44,18 @@
 		maxFilesize : 20971520,
 		disablePreviews: true,
 		init : function() {
-			this.on("error", function(file, message) {
-				console.log("Error uploading file " + file.name + " - " + message);
+			this.on("error", function(file, response) {
+				console.log("Error uploading file " + file.name + " - " + response);
 				this.removeFile(file);
 			});
 			this.on("addedfile", function(file) {
 				console.log("Uploading file " + file.name + " with size " + (file.size/1024/1024).toFixed(2) + " MB");
 			});
-		}
+		},
+      success: function(file, response) {
+          if(response.code == 0)
+			console.log(response.message);
+        }
 	};
 	
 	$('#uploadedText').on('keyup keydown', characterCount);
