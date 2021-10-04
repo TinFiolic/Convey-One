@@ -154,7 +154,7 @@ public class MainController {
 				mainService.upload(file, request.getSession().getId());
 				logger.info(code + " - successfully uploaded a file.");
 				JSONResponse.put("code", "0");
-				JSONResponse.put("message", "Successfully uploaded a file! " + uploadedFiles.size() + " files currently in session, total size " + totalFileSizes/1024/1024 + " MB.");
+				JSONResponse.put("message", "Successfully uploaded " + file.getOriginalFilename() + "!");
 				JSONResponse.put("numberOfFiles", String.valueOf(uploadedFiles.size()));
 				JSONResponse.put("totalFileSizes", String.valueOf(totalFileSizes));
 				

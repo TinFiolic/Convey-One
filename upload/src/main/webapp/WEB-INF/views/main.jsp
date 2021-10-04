@@ -8,6 +8,8 @@
 	<body>
 		<%@ include file="../fragments/footer.jspf"%>
 		
+		<div id="poppupMessageContainer"></div>
+		
 		<c:if test="${fn:length(code) ne 5}">
 			<div id="startScreenFragment">
 				<%@ include file="../fragments/startScreen.jspf"%>
@@ -22,7 +24,35 @@
 	</body>
 	
 	<script>
+		var poppupCounter = 0;
+		
 		document.body.style.backgroundImage = "url('/img/dark_bg1.png')";
+		
+		function showPoppupMessage(message, type) {
+			var delayTime= 5000;
+			var thisPoppup = poppupCounter;
+
+			$("#poppupMessageContainer").append('<div class="poppupMessage" id="' + thisPoppup + '"></div>');
+			
+			$("#" + thisPoppup).text(message);
+
+			if(type == "success") {
+				$("#" + thisPoppup).css("background-color", "#376e37");
+				$("#" + thisPoppup).css("border", "4px solid #408140");
+				delayTime = 5000;
+			}
+
+			if(type == "fail") {
+				$("#" + thisPoppup).css("background-color", "#B93A45");
+				$("#" + thisPoppup).css("border", "4px solid #7f282f");
+				delayTime = 7000;
+			}
+			
+			poppupCounter++;
+			
+			$("#" + thisPoppup).fadeIn();
+			$("#" + thisPoppup).delay(delayTime).fadeOut("slow");
+		}
 	</script>
 </html>
 

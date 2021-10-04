@@ -324,3 +324,22 @@ input[type="file"] {
 .dz-max-files-reached, .dz-message { 
 	display: none;
 }
+
+#poppupMessageContainer {
+	position: absolute;
+	top: 0em;
+	left: 75%;
+	
+	width: 25%;
+}
+
+.poppupMessage {
+	padding: 1em;
+	
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	
+	color: #fff;
+	
+	border-radius: 5px;
+}

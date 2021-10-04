@@ -53,10 +53,15 @@
 			});
 		},
       success: function(file, response) {
-          if(response.code == 0)
-			console.log(response.message);
+          if(response.code == 0) {
+      		showPoppupMessage(response.message, "success");
+          }
         }
 	};
+
+	$("#updateText").click(function() {
+
+	});
 	
 	$('#uploadedText').on('keyup keydown', characterCount);
 
