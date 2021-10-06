@@ -343,3 +343,27 @@ input[type="file"] {
 	
 	border-radius: 5px;
 }
+
+.fa-file {
+	font-size: 42px;
+}
+
+.fileIcon {
+	display: inline-block; 
+	padding: 0.5em;
+}
+
+.fileIcon:hover {
+	text-shadow: 0 0 1px #fff, 0 0 1px #fff, 0 0 1px #BD5D2D, 0 0 5px #BA3B46, 0 0 6px #BA3B46, 0 0 7px #BA3B46, 0 0 8px #BA3B46;
+}
+
+sup { 
+	vertical-align: top;
+	font-size: 24px;
+	
+	color: #BD5D2D;
+}
+
+sup:hover {
+	color: #BA3B46;
+}

@@ -115,7 +115,7 @@ public class MainController {
 		
 		if (file.getSize() > maxFileSize) {
 			logger.info(code + " - uploaded file too big!");
-			return file.getName() + " file size is too big (" + file.getSize()/1024/1024 + " MB)!";
+			return file.getOriginalFilename() + " file size is too big (" + file.getSize()/1024/1024 + " MB)!";
 		}
 
 		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
@@ -145,9 +145,9 @@ public class MainController {
 						return "Total number of uploaded files is too big (" + uploadedFiles.size() + ")!";
 					}
 					
-					if(file.getName().length() > maxFileNameLength) {
+					if(file.getOriginalFilename().length() > maxFileNameLength) {
 						logger.info(code + " - file name is too long!");
-						return "Name of uploaded file is too long (" + file.getName().length() + " characters)!";
+						return "Name of uploaded file is too long (" + file.getOriginalFilename().length() + " characters)!";
 					}
 				}
 				
@@ -158,6 +158,14 @@ public class MainController {
 				JSONResponse.put("numberOfFiles", String.valueOf(uploadedFiles.size()));
 				JSONResponse.put("totalFileSizes", String.valueOf(totalFileSizes));
 				
+				List<String> fileNamesList = new ArrayList<>();
+				
+				for(File fileIterator : mainService.getFiles(codeFromSessionId)) {			
+					fileNamesList.add(fileIterator.getName().substring(0, fileIterator.getName().length() - 10));
+				}
+				
+				JSONResponse.put("fileNames", String.valueOf(fileNamesList));
+
 				String json = objectMapper.writeValueAsString(JSONResponse);
 				return json;
 			} else {

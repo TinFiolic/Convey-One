@@ -2,13 +2,42 @@
 	<div class="formContent">
 		
 		<div id="uploadedFiles">
-			No files uploaded.
-		</div>
+			<c:if test="${not empty '${files}'}">
+				<c:forEach items="${files}" var="file" varStatus="loop">
+					
+					<script>
+						var fileName = '${file.getName()}';
+						fileName = fileName.slice(0, -10);
+					</script>
+					
+					<div class="fileIcon">
+						<a href="download/${code}/${loop.index}"> 
+							<i class="fa fa-file"></i>
+						</a>
+						
+<!-- 						TODO: MODAL ZA CONFIRM I DA JE AJAX A NE LINK -->
+						<sup>
+							<a href="delete/${code}/${loop.index}"> 
+								 <i class="fa fa-times-circle"></i>
+							</a>
+						</sup>
+						 
+						 <br>
+						 
+						 <a href="download/${code}/${loop.index}">
+						 	<script> document.write(fileName) </script> 
+						 </a>
+					</div>
+
+				</c:forEach>
+			</c:if>
 			
-		<form action="/upload/${code}" class="dropzone dropZone" id="dropzoneForm">
-<!-- 			<p style="pointer-events: none;">Drop your files or click to browse</p> -->
-<!-- 			<p style="pointer-events: none;">(Max. 20 files, total max. size 20 MB)</p> -->
-		</form>
+			<c:if test="${fn:length(files) < 1}">
+				No files have been uploaded!
+			</c:if>
+		</div>
+		
+		<form action="/upload/${code}" class="dropzone dropZone" id="dropzoneForm"></form>
 		
 		<hr>
 		
@@ -54,7 +83,16 @@
 		},
       success: function(file, response) {
           if(response.code == 0) {
-      		showPoppupMessage(response.message, "success");
+			showPoppupMessage(response.message, "success");
+			
+			var fileNames = response.fileNames.replace("[", "").replace("]", "").replace(" ", "").split(",");
+
+			var fileElements = "";
+			$.each(fileNames, function(iterator, name) {
+				fileElements = fileElements.concat('<div class="fileIcon"><a href="download/${code}/' + iterator + '"> <i class="fa fa-file"></i> <br> ' + name + ' </a></div>');
+			});
+
+      		$("#uploadedFiles").html(fileElements);
           }
         }
 	};
