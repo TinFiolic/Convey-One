@@ -108,15 +108,16 @@ public class MainController {
 	}
 
 	@PostMapping("/upload/{code}")
-	public String upload(@PathVariable String code, @RequestParam("file") MultipartFile file,
+	public ModelMap upload(@PathVariable String code, @RequestParam("file") MultipartFile file,
 			HttpServletRequest request) throws JsonProcessingException {
 		
-		Map<String, String> JSONResponse = new HashMap();
-		ObjectMapper objectMapper = new ObjectMapper();
+		ModelMap map = new ModelMap();
 		
 		if (file.getSize() > maxFileSize) {
 			logger.info(code + " - uploaded file too big!");
-			return file.getOriginalFilename() + " file size is too big (" + file.getSize()/1024/1024 + " MB)!";
+			map.addAttribute("type", "fail");
+			map.addAttribute("message", file.getOriginalFilename() + " file size is too big (" + file.getSize()/1024/1024 + " MB)!");
+			return map;
 		}
 
 		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
@@ -137,45 +138,54 @@ public class MainController {
 					totalFileSizes = fileSizes;
 					if(fileSizes > maxFileSize) {
 						logger.info(code + " -  total file sizes exceed session limit!");
-						return "Total size of uploaded files is too big (" + fileSizes/1024/1024 + " MB)!";
+						map.addAttribute("type", "fail");
+						map.addAttribute("message", "Total size of uploaded files is too big (" + fileSizes/1024/1024 + " MB)! Maximum allowed is " + maxFileSize + ".");
+						return map;
 					}
 					
 					// Include the file currently being uploaded into the equation
 					if(uploadedFiles.size() + 1 > maxFileAmount) {
 						logger.info(code + " - too many total files in session!");
-						return "Total number of uploaded files is too big (" + uploadedFiles.size() + ")!";
+						map.addAttribute("type", "fail");
+						map.addAttribute("message", "Total number of uploaded files is too big (" + uploadedFiles.size() + ")! Maximum allowed is " + maxFileAmount + ".");
+						return map;
 					}
 					
 					if(file.getOriginalFilename().length() > maxFileNameLength) {
 						logger.info(code + " - file name is too long!");
-						return "Name of uploaded file is too long (" + file.getOriginalFilename().length() + " characters)!";
+						map.addAttribute("type", "fail");
+						map.addAttribute("message", "Name of uploaded file is too long (" + file.getOriginalFilename().length() + " characters)! Maximum allowed is " + maxFileNameLength + ".");
+						return map;
 					}
 				}
 				
 				mainService.upload(file, request.getSession().getId());
 				logger.info(code + " - successfully uploaded a file.");
-				JSONResponse.put("code", "0");
-				JSONResponse.put("message", "Successfully uploaded " + file.getOriginalFilename() + "!");
-				JSONResponse.put("numberOfFiles", String.valueOf(uploadedFiles.size()));
-				JSONResponse.put("totalFileSizes", String.valueOf(totalFileSizes));
+				map.addAttribute("type", "success");
+				map.addAttribute("message", "Successfully uploaded a file!");
 				
-				List<String> fileNamesList = new ArrayList<>();
-				
-				for(File fileIterator : mainService.getFiles(codeFromSessionId)) {			
-					fileNamesList.add(fileIterator.getName().substring(0, fileIterator.getName().length() - 10));
+				if(mainService.getFiles(code) != null && !mainService.getFiles(code).isEmpty()) {		
+					List<String> fileNames = new ArrayList();
+					
+					for(File fileIterator : mainService.getFiles(code)) {
+						fileNames.add(fileIterator.getName().substring(0, fileIterator.getName().length() - 10));
+					}
+					
+					map.addAttribute("fileNames", fileNames);
 				}
 				
-				JSONResponse.put("fileNames", String.valueOf(fileNamesList));
-
-				String json = objectMapper.writeValueAsString(JSONResponse);
-				return json;
+				return map;
 			} else {
 				logger.info(code + " - no authority to upload to this session!");
-				return "You do not have authority to upload files to this session!";
+				map.addAttribute("type", "fail");
+				map.addAttribute("message", "You do not have authority to upload files to this session!");
+				return map;
 			}
 		} else {
 			logger.info(code + " - uploading to an invalid session!");
-			return "Session is invalid!";
+			map.addAttribute("type", "fail");
+			map.addAttribute("message", "Invalid session!");
+			return map;
 		}
 	}
 
@@ -237,21 +247,38 @@ public class MainController {
 			HttpServletRequest request) throws IOException {
 	
 		ModelMap map = new ModelMap();
-		map.addAttribute("T", "TESTT");
 
 		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
 
 		if (codeFromSessionId != null && !codeFromSessionId.isEmpty()) {
 			if (code.equals(codeFromSessionId)) {
+				
 				mainService.deleteFile(index, code);
+				
+				if(mainService.getFiles(code) != null && !mainService.getFiles(code).isEmpty()) {		
+					List<String> fileNames = new ArrayList();
+					
+					for(File file : mainService.getFiles(code)) {
+						fileNames.add(file.getName().substring(0, file.getName().length() - 10));
+					}
+					
+					map.addAttribute("fileNames", fileNames);
+				}
+				
 				logger.info(code + " - successfully deleted a file.");
+				map.addAttribute("type", "success");
+				map.addAttribute("message", "Successfully deleted a file!");
 				return map;
 			} else {
 				logger.info(code + " - no authority to delete this file!");
+				map.addAttribute("type", "fail");
+				map.addAttribute("message", "You do not have the authority to delete this file!");
 				return map;
 			}
 		} else {
 			logger.info(code + " - accessing an invalid session!");
+			map.addAttribute("type", "fail");
+			map.addAttribute("message", "Invalid session!");
 			return map;
 		}
 	}

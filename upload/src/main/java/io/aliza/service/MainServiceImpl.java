@@ -128,7 +128,7 @@ public class MainServiceImpl implements MainService {
 		File folder = new File(filesDirectory + code);
 		File file = listFilesForFolder(folder).get(index);
 
-		Map<byte[], String> byteStringMap = new HashMap<>();
+		Map<byte[], String> byteStringMap = new HashMap<>(); 
 
 		try {
 			// Decrypt the file, then decode it and send bytes over for download
@@ -140,7 +140,7 @@ public class MainServiceImpl implements MainService {
 					file.getName().substring(0, file.getName().length() - 10));
 
 			return byteStringMap;
-		} catch (Exception e) {
+		} catch (Exception e) { 
 			logger.error("Cannot find file: " + e.getMessage());
 		}
 

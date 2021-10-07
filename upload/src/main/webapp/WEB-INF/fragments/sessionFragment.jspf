@@ -76,47 +76,35 @@
 	    clickable: "#dropzoneForm", 
 		addRemoveLinks : true,
 		maxFiles : 20,
-		maxFilesize : 20971520,
+		maxFilesize : 20,
 		disablePreviews: true,
 		init : function() {
 			this.on("error", function(file, response) {
-				console.log("Error uploading file " + file.name + " - " + response);
+				showPoppupMessage("Error uploading file " + file.name + "! " + response, "fail");
 				this.removeFile(file);
 			});
 			this.on("addedfile", function(file) {
-				console.log("Uploading file " + file.name + " with size " + (file.size/1024/1024).toFixed(2) + " MB");
+				showPoppupMessage("Uploading file " + file.name + " with size " + (file.size/1024/1024).toFixed(2) + " MB...", "success");
 			});
 		},
       success: function(file, response) {
-          if(response.code == 0) {
-			showPoppupMessage(response.message, "success");
-			
-			var fileNames = response.fileNames.replace("[", "").replace("]", "").replace(" ", "").split(",");
-
-			var fileElements = "";
-			$.each(fileNames, function(iterator, name) {
-				fileElements = fileElements.concat('<div class="fileIcon"><a href="download/${code}/' + iterator + '"> <i class="fa fa-file"></i> <br> ' + name + ' </a></div>');
-			});
-
-      		$("#uploadedFiles").html(fileElements);
-          }
+			showPoppupMessage(response.message, response.type);
+			populateFiles(response.fileNames)    
         }
 	  });
 
 	$('#uploadedText').on('keyup keydown', characterCount);
-	
-	$(".deleteFile").click(function() {
-		console.log("dd");
+
+	//On dynamically generated deleteFile class button click
+	$("#uploadedFiles").on("click", ".deleteFile", function(){
 		$.ajax("/delete/${code}/" + $(this).data("id"))
 		  .done(function(data, textStatus, jqXHR) {
-			  console.log(data.T);
+			  showPoppupMessage(data.message, data.type);
+			  populateFiles(data.fileNames);
 		  })
 		  .fail(function() {
-
+			  showPoppupMessage("Error deleting the file!", "fail");
 		  })
-		  .always(function() {
-
-		  });	
 	});
 
 	$("#endSession").click(function() {
@@ -143,5 +131,28 @@
 
 	function characterCount() {
 	  $('.charCounter').text($(this).val().length + " / 128 characters used");
+	}
+
+	function populateFiles(fileNameList) {
+		console.log($("#uploadedFiles").text());
+		if(typeof fileNameList !== 'undefined' && fileNameList.length > 0) {
+			
+			fileElements = "";
+			
+			$.each(fileNameList, function(iterator, name) {
+				fileElements = fileElements.concat(
+					'<div class="fileIcon"> <a href="download/${code}/' + iterator + '"> <i class="fa fa-file"></i> </a>' +
+					'<br> <a href="download/${code}/' + iterator + '">' + name + '</a>' + 
+					'<br> <a href="download/${code}/' + iterator + '">' + 
+					'<button type="button" class="btn btn-success" style="font-size: 14px; padding: 0.2em; width: 100%;">Download</button> </a>' +
+					'<br style="margin-bottom: 1em;">' + 
+					'<button type="button" class="btn btn-danger deleteFile" data-id="' + iterator + '" style="font-size: 14px; padding: 0.2em; width: 100%;">Delete</button></div>');
+			});
+
+			$("#uploadedFiles").html(fileElements);
+		} else {
+			if($("#uploadedFiles").text() != 'No files have been uploaded!')
+				$("#uploadedFiles").html("No files have been uploaded!");
+		}
 	}
 </script>
