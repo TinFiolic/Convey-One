@@ -122,14 +122,11 @@ public class MainServiceImpl implements MainService {
 	}
 	
 	@Override
-	public void getText(String code) {
-		String code = sessionIdCodeMap.get(sessionId);
-
-		if (code == null || code.isEmpty())
-			return;
+	public String getText(String code) {
+		if(codeTextMap.containsKey(code))
+			return codeTextMap.get(code);
 		
-		if(codeForSessionIdExists(sessionId) != null)
-			codeTextMap.put(code, text);
+		return null;
 	}
 
 	@Override

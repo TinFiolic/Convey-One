@@ -32,4 +32,6 @@ public interface MainService {
 	List<File> listFilesForFolder(File folder);
 
 	void uploadText(String sessionId, String text);
+
+	String getText(String code);
 }
