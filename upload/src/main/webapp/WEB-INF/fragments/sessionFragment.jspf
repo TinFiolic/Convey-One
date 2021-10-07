@@ -41,6 +41,10 @@
 			</c:if>
 		</div>
 		
+		<p class="fileSizeAndCount">0 / 10 files uploaded (0 / 20 MB used up)</p>
+		
+		<br>
+						
 		<form action="/upload/${code}" class="dropzone dropZone" id="dropzoneForm"></form>
 		
 		<hr>

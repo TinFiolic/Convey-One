@@ -39,7 +39,7 @@ public class MainController {
 	Logger logger = LoggerFactory.getLogger(MainController.class);
 
 	static Integer maxFileSize = 20971520;	// 20MB in bytes
-	static Integer maxFileAmount = 20;
+	static Integer maxFileAmount = 10;
 	static Integer maxFileNameLength = 30;
 	
 	@GetMapping("/error")

@@ -367,3 +367,8 @@ sup {
 sup:hover {
 	text-shadow: 0 0 1px #fff, 0 0 1px #fff, 0 0 1px #BA3B46, 0 0 5px #BA3B46, 0 0 6px #BA3B46, 0 0 7px #BA3B46, 0 0 8px #BA3B46
 }
+
+.fileSizeAndCount {
+	float: right;
+	font-size: 12px;
+}
