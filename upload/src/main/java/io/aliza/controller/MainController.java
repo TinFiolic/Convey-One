@@ -139,7 +139,7 @@ public class MainController {
 					if(fileSizes > maxFileSize) {
 						logger.info(code + " -  total file sizes exceed session limit!");
 						map.addAttribute("type", "fail");
-						map.addAttribute("message", "Total size of uploaded files is too big (" + fileSizes/1024/1024 + " MB)! Maximum allowed is " + maxFileSize + ".");
+						map.addAttribute("message", "Total size of uploaded files is too big (" + fileSizes/1024/1024 + " MB)! Maximum allowed is " + maxFileSize/1024/1024 + ".");
 						return map;
 					}
 					
@@ -166,12 +166,15 @@ public class MainController {
 				
 				if(mainService.getFiles(code) != null && !mainService.getFiles(code).isEmpty()) {		
 					List<String> fileNames = new ArrayList();
+					List<Long> fileSizes = new ArrayList();
 					
 					for(File fileIterator : mainService.getFiles(code)) {
 						fileNames.add(fileIterator.getName().substring(0, fileIterator.getName().length() - 10));
+						fileSizes.add(fileIterator.length());
 					}
 					
 					map.addAttribute("fileNames", fileNames);
+					map.addAttribute("fileSizes", fileSizes);
 				}
 				
 				return map;
@@ -257,12 +260,15 @@ public class MainController {
 				
 				if(mainService.getFiles(code) != null && !mainService.getFiles(code).isEmpty()) {		
 					List<String> fileNames = new ArrayList();
+					List<Long> fileSizes = new ArrayList();
 					
 					for(File file : mainService.getFiles(code)) {
 						fileNames.add(file.getName().substring(0, file.getName().length() - 10));
+						fileSizes.add(file.length());
 					}
 					
 					map.addAttribute("fileNames", fileNames);
+					map.addAttribute("fileSizes", fileSizes);
 				}
 				
 				logger.info(code + " - successfully deleted a file.");
