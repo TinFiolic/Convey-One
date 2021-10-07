@@ -37,14 +37,14 @@
 			$("#" + thisPoppup).text(message);
 
 			if(type == "success") {
-				$("#" + thisPoppup).css("background-color", "#376e37");
-				$("#" + thisPoppup).css("border", "4px solid #408140");
+				$("#" + thisPoppup).css("background-color", "#28A745");
+				$("#" + thisPoppup).css("border", "4px solid #218838");
 				delayTime = 5000;
 			}
 
 			if(type == "fail") {
-				$("#" + thisPoppup).css("background-color", "#B93A45");
-				$("#" + thisPoppup).css("border", "4px solid #7f282f");
+				$("#" + thisPoppup).css("background-color", "#DC3545");
+				$("#" + thisPoppup).css("border", "4px solid #C92333");
 				delayTime = 7000;
 			}
 			

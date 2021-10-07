@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -232,8 +233,11 @@ public class MainController {
 	}
 
 	@GetMapping("/delete/{code}/{index}")
-	public Integer delete(@PathVariable int index, @PathVariable String code, HttpServletResponse response,
+	public ModelMap delete(@PathVariable int index, @PathVariable String code, HttpServletResponse response,
 			HttpServletRequest request) throws IOException {
+	
+		ModelMap map = new ModelMap();
+		map.addAttribute("T", "TESTT");
 
 		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
 
@@ -241,14 +245,14 @@ public class MainController {
 			if (code.equals(codeFromSessionId)) {
 				mainService.deleteFile(index, code);
 				logger.info(code + " - successfully deleted a file.");
-				return 0;
+				return map;
 			} else {
 				logger.info(code + " - no authority to delete this file!");
-				return 1;
+				return map;
 			}
 		} else {
 			logger.info(code + " - accessing an invalid session!");
-			return 2;
+			return map;
 		}
 	}
 

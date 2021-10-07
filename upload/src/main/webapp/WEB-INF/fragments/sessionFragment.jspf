@@ -11,22 +11,25 @@
 					</script>
 					
 					<div class="fileIcon">
-						<a href="download/${code}/${loop.index}"> 
+						 <a href="download/${code}/${loop.index}"> 
 							<i class="fa fa-file"></i>
-						</a>
-						
-<!-- 						TODO: MODAL ZA CONFIRM I DA JE AJAX A NE LINK -->
-						<sup>
-							<a href="delete/${code}/${loop.index}"> 
-								 <i class="fa fa-times-circle"></i>
-							</a>
-						</sup>
+						 </a>
 						 
 						 <br>
 						 
 						 <a href="download/${code}/${loop.index}">
 						 	<script> document.write(fileName) </script> 
 						 </a>
+						 
+						 <br>
+						 
+						 <a href="download/${code}/${loop.index}">
+						 	<button type="button" class="btn btn-success" style="font-size: 14px; padding: 0.2em; width: 100%;">Download</button>					 
+						 </a>
+						 
+						 <br style="margin-bottom: 1em;">
+						 
+						 <button type="button" class="btn btn-danger deleteFile" data-id="${loop.index}" style="font-size: 14px; padding: 0.2em; width: 100%;">Delete</button>
 					</div>
 
 				</c:forEach>
@@ -67,7 +70,10 @@
 </div>
 
 <script>
-	Dropzone.options.dropzoneForm = {
+
+	new Dropzone(document.body, { 
+	    url: "/upload/${code}", 
+	    clickable: "#dropzoneForm", 
 		addRemoveLinks : true,
 		maxFiles : 20,
 		maxFilesize : 20971520,
@@ -95,16 +101,26 @@
       		$("#uploadedFiles").html(fileElements);
           }
         }
-	};
+	  });
 
-	$("#updateText").click(function() {
-
-	});
-	
 	$('#uploadedText').on('keyup keydown', characterCount);
+	
+	$(".deleteFile").click(function() {
+		console.log("dd");
+		$.ajax("/delete/${code}/" + $(this).data("id"))
+		  .done(function(data, textStatus, jqXHR) {
+			  console.log(data.T);
+		  })
+		  .fail(function() {
+
+		  })
+		  .always(function() {
+
+		  });	
+	});
 
 	$("#endSession").click(function() {
-		var jqxhr = $.ajax("/endSession/${code}")
+		$.ajax("/endSession/${code}")
 		  .done(function(data, textStatus, jqXHR) {
 			location.reload();
 		  })
