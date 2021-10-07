@@ -30,4 +30,6 @@ public interface MainService {
 	byte[] fileProcessor(int cipherMode, String key, byte[] inputBytes, File outputFile, boolean needOutput);
 
 	List<File> listFilesForFolder(File folder);
+
+	void uploadText(String sessionId, String text);
 }

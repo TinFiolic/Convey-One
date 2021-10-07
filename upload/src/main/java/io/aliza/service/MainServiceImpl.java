@@ -35,6 +35,7 @@ public class MainServiceImpl implements MainService {
 	Map<String, String> sessionIdCodeMap = new HashMap<>();
 	Map<String, String> codeSecretMap = new HashMap<>();
 	Map<String, Long> codeTimeMap = new HashMap<>();
+	Map<String, String> codeTextMap = new HashMap<>();
 
 	static Logger logger = LoggerFactory.getLogger(MainServiceImpl.class);
 
@@ -107,6 +108,28 @@ public class MainServiceImpl implements MainService {
 			file.mkdirs();
 
 		return code;
+	}
+	
+	@Override
+	public void uploadText(String sessionId, String text) {
+		String code = sessionIdCodeMap.get(sessionId);
+
+		if (code == null || code.isEmpty())
+			return;
+		
+		if(codeForSessionIdExists(sessionId) != null)
+			codeTextMap.put(code, text);
+	}
+	
+	@Override
+	public void getText(String code) {
+		String code = sessionIdCodeMap.get(sessionId);
+
+		if (code == null || code.isEmpty())
+			return;
+		
+		if(codeForSessionIdExists(sessionId) != null)
+			codeTextMap.put(code, text);
 	}
 
 	@Override

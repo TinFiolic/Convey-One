@@ -1,6 +1,11 @@
 <div class="wrapper">
 	<div class="formContent">
 		
+		<script>
+			var uploadedFileCount = 0;
+			var uploadedFileSize = 0;
+		</script>
+		
 		<div id="uploadedFiles">
 			<c:if test="${not empty '${files}'}">
 				<c:forEach items="${files}" var="file" varStatus="loop">
@@ -19,7 +24,7 @@
 						 <br>
 						 
 						 <a href="download/${code}/${loop.index}">
-						 	<script> document.write(fileName + ' (' + fileSize + ' MB)') </script> 
+						 	<script> document.write(fileName + ' (' + fileSize + ' MB)'); uploadedFileCount++; uploadedFileSize+= Number(fileSize); </script> 
 						 </a>
 						 
 						 <br>
@@ -41,7 +46,7 @@
 			</c:if>
 		</div>
 		
-		<p class="fileSizeAndCount">0 / 10 files uploaded (0 / 20 MB used up)</p>
+		<p class="fileSizeAndCount"><span class="uploadedFileCount">0</span> / 10 files uploaded (<span class="uploadedFileSize">0</span> MB / 20 MB used up)</p>
 		
 		<br>
 						
@@ -75,6 +80,9 @@
 </div>
 
 <script>
+
+	$(".uploadedFileSize").text(uploadedFileSize);
+	$(".uploadedFileCount").text(uploadedFileCount);
 
 	//Initialization of qrcode plugin
 	var qrcode = new QRCode(document.getElementById("qrcode"), {
@@ -146,6 +154,9 @@
 	//Populate files area (list of file names and list of file sizes JSON as arguments)
 	function populateFiles(fileNameList, fileSizeList, isUserDeleting) {
 		if(typeof fileNameList !== 'undefined' && fileNameList.length > 0) {
+
+			uploadedFileCount = 0; 
+			uploadedFileSize = 0;
 			
 			fileElements = "";	
 			$.each(fileNameList, function(iterator, name) {
@@ -156,15 +167,29 @@
 					'<button type="button" class="btn btn-success" style="font-size: 14px; padding: 0.2em; width: 100%;">Download</button> </a>' +
 					'<br style="margin-bottom: 1em;">' + 
 					'<button type="button" class="btn btn-danger deleteFile" data-id="' + iterator + '" style="font-size: 14px; padding: 0.2em; width: 100%;">Delete</button></div>');
-			});
+				
+				uploadedFileCount++; 
+				uploadedFileSize += Number(Math.round((fileSizeList[iterator]/1024/1024) * 100) / 100);
 
+				$(".uploadedFileSize").text(uploadedFileSize);
+				$(".uploadedFileCount").text(uploadedFileCount);
+			});
+			
 			$("#uploadedFiles").html(fileElements);
 		} else {
 			
-			if(isUserDeleting == true)
+			if(isUserDeleting == true) {
 				$("#uploadedFiles").html("No files have been uploaded!");
-			else if($("#uploadedFiles").text().length < 30)
+				uploadedFileCount = 0; 
+				uploadedFileSize = 0;
+			} else if($("#uploadedFiles").text().length < 30) {
 				$("#uploadedFiles").html("No files have been uploaded!");
+				uploadedFileCount = 0; 
+				uploadedFileSize = 0;
+			}
+
+			$(".uploadedFileSize").text(uploadedFileSize);
+			$(".uploadedFileCount").text(uploadedFileCount);
 		}
 	}
 </script>
