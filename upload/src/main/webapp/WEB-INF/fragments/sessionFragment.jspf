@@ -5,7 +5,7 @@
 			var uploadedFileCount = 0;
 			var uploadedFileSize = 0;
 		</script>
-		
+				
 		<div id="uploadedFiles">
 			<c:if test="${not empty '${files}'}">
 				<c:forEach items="${files}" var="file" varStatus="loop">
@@ -54,7 +54,7 @@
 		
 		<hr>
 		
-		<textarea id="uploadedText" maxlength="128" placeholder="You can paste/type anything here, press the button below, and the text will be uploaded to your session to access from another device!"></textarea>
+		<textarea id="uploadedText" maxlength="128" placeholder="You can paste/type anything here, press the button below, and the text will be uploaded to your session to access from another device!">${text}</textarea>
 		<p class="charCounter">0 / 128 characters used</p>
 		
 		<button class="button" id="updateText" style="padding: 0.1em 6.3em 0.3em;">update text</button>
@@ -71,7 +71,7 @@
 				<hr style="width: 100%;">	
 					
 				<b style="color: #BD5D2D; font-size: 25px;">Time left in session:</b> <br>
-				<div id="timer">00:00</div>
+				<div id="timer">5:00</div>
 			</div>
 		</div>
 		<hr>
@@ -84,6 +84,30 @@
 	$(".uploadedFileSize").text(uploadedFileSize);
 	$(".uploadedFileCount").text(uploadedFileCount);
 
+	//Timer
+	var secondsLeftInSession = Math.round(300 - ${timeLeft}/1000);
+	setTimeout(countdown,1000);
+
+	function countdown() {
+		secondsLeftInSession--;
+		
+	   if(secondsLeftInSession > 0)
+	      setTimeout(countdown, 1000);
+	   
+	   if(secondsLeftInSession < 30) 
+		   $("#timer").css("text-shadow", "0 0 1px #fff, 0 0 1px #fff, 0 0 1px #BA3B46, 0 0 5px #BA3B46, 0 0 6px #BA3B46, 0 0 7px #BA3B46, 0 0 8px #BA3B46");
+
+	   if(secondsLeftInSession < 1) 
+		   location.reload();
+
+	    var minutes = Math.floor(secondsLeftInSession / 60);
+	    var seconds = secondsLeftInSession - (minutes * 60);
+
+	    if(seconds < 10)
+	    	$("#timer").text(minutes + ":0" + seconds);
+	    else
+	   		$("#timer").text(minutes + ":" + seconds);
+	}
 	//Initialization of qrcode plugin
 	var qrcode = new QRCode(document.getElementById("qrcode"), {
 	    text: window.location.host + "/join/${code}",
@@ -122,28 +146,54 @@
 
 	//On dynamically generated deleteFile class button click
 	$("#uploadedFiles").on("click", ".deleteFile", function(){
-		$.ajax("/delete/${code}/" + $(this).data("id"))
-		  .done(function(data, textStatus, jqXHR) {
-			  showPoppupMessage(data.message, data.type);
-			  populateFiles(data.fileNames, data.fileSizes, true);
-		  })
-		  .fail(function() {
-			  showPoppupMessage("Error deleting the file!", "fail");
-		  })
+		$.ajax({
+		    url: "/delete/${code}/" + $(this).data("id"),
+		    method : "GET",
+		    dataType: "json",
+		    
+		    success: function(data, textStatus, jqXHR) { 
+				showPoppupMessage(data.message, data.type);
+				populateFiles(data.fileNames, data.fileSizes, true);
+		    },
+		    fail: function(jqXHR, textStatus, errorThrown) {
+		    	showPoppupMessage('Could not delete file, server response: ' + textStatus + ': ' + errorThrown, "fail");
+		    }
+		});
 	});
 
 	//On session end
 	$("#endSession").click(function() {
-		$.ajax("/endSession/${code}")
-		  .done(function(data, textStatus, jqXHR) {
-			location.reload();
-		  })
-		  .fail(function() {
+		$.ajax({
+		    url: "/endSession/${code}",
+		    method : "GET",
+		    dataType: "json",
+		    
+		    success: function(data, textStatus, jqXHR) { 
+		    	location.reload();
+		    },
+		    fail: function(jqXHR, textStatus, errorThrown) {
+		    	showPoppupMessage('Could not end session, server response: ' + textStatus + ': ' + errorThrown, "fail");
+			    setTimeout(location.reload(), 5000);
+		    }
+		});
+	});
 
-		  })
-		  .always(function() {
-
-		  });	
+	//On update text
+	$("#updateText").click(function() {
+		$.ajax({
+		    url: "/text/update/${code}",
+		    method : "POST",
+		    dataType: "text",
+		    data: { "text" : $("#uploadedText").val() },
+		    
+		    success: function(data, textStatus, jqXHR) { 
+			    jsonData = JSON.parse(data);
+		    	showPoppupMessage(jsonData.message, jsonData.type);
+		    },
+		    fail: function(jqXHR, textStatus, errorThrown) {
+		    	showPoppupMessage('Could not update text, server response: ' + textStatus + ': ' + errorThrown, "fail");
+		    }
+		});
 	});
 
 	//Count number of characters in the textbox

@@ -23,17 +23,14 @@
 
 <script>
 	$("#newSession").click(function() {
-		//TODO: Napisi lijepe poruke i poppupovi i to
-		var jqxhr = $.ajax("/code")
+		$.ajax("/code")
 		  .done(function(data, textStatus, jqXHR) {
 			location.reload();
 		  })
 		  .fail(function() {
-
+		    showPoppupMessage('Could not generate a new code, server response: ' + textStatus + ': ' + errorThrown, "fail");
+			setTimeout(location.reload(), 5000);
 		  })
-		  .always(function() {
-
-		  });	
 	});
 
 	$("#joinSession").click(function() {

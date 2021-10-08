@@ -111,14 +111,13 @@ public class MainServiceImpl implements MainService {
 	}
 	
 	@Override
-	public void uploadText(String sessionId, String text) {
+	public void updateText(String sessionId, String text) {
 		String code = sessionIdCodeMap.get(sessionId);
 
 		if (code == null || code.isEmpty())
 			return;
 		
-		if(codeForSessionIdExists(sessionId) != null)
-			codeTextMap.put(code, text);
+		codeTextMap.put(code, text);
 	}
 	
 	@Override
@@ -200,11 +199,20 @@ public class MainServiceImpl implements MainService {
 		codeTimeMap.remove(code);
 		sessionIdCodeMap.values().remove(code);
 		codeSecretMap.remove(code);
+		codeTextMap.remove(code);
 
 		File file = new File(filesDirectory + code);
 		FileSystemUtils.deleteRecursively(file);
 
 		logger.info("Session for code " + code + " ended. All files deleted.");
+	}
+	
+	@Override
+	public String getRemainingTime(String code) {
+		Long time = codeTimeMap.get(code);
+		Long now = System.currentTimeMillis();
+		
+		return String.valueOf(now - time);	
 	}
 
 	@Override
@@ -220,6 +228,7 @@ public class MainServiceImpl implements MainService {
 				codeTimeMap.remove(code);
 				sessionIdCodeMap.values().remove(code);
 				codeSecretMap.remove(code);
+				codeTextMap.remove(code);
 
 				File file = new File(filesDirectory + code);
 				FileSystemUtils.deleteRecursively(file);

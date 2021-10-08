@@ -41,6 +41,7 @@ public class MainController {
 	static Integer maxFileSize = 20971520;	// 20MB in bytes
 	static Integer maxFileAmount = 10;
 	static Integer maxFileNameLength = 30;
+	static Integer maxTextLength = 128;
 	
 	@GetMapping("/error")
 	public ModelAndView errorPage(HttpServletRequest request) {
@@ -63,6 +64,8 @@ public class MainController {
 		} else {
 			modelAndView.addObject("code", code);
 			modelAndView.addObject("files", files);
+			modelAndView.addObject("text", mainService.getText(code));
+			modelAndView.addObject("timeLeft", mainService.getRemainingTime(code));
 		}
 
 		
@@ -109,7 +112,7 @@ public class MainController {
 
 	@PostMapping("/upload/{code}")
 	public ModelMap upload(@PathVariable String code, @RequestParam("file") MultipartFile file,
-			HttpServletRequest request) throws JsonProcessingException {
+			HttpServletRequest request) {
 		
 		ModelMap map = new ModelMap();
 		
@@ -206,7 +209,46 @@ public class MainController {
 			return "";
 		}
 	}
+	
+	
+	@PostMapping("/text/update/{code}")
+	public ModelMap editText(@PathVariable String code, @RequestParam("text") String text, HttpServletRequest request) throws IOException {
+		
+		ModelMap map = new ModelMap();
+		
+		if (text.length() > maxTextLength) {
+			logger.info(code + " - text is too long!");
+			map.addAttribute("type", "fail");
+			map.addAttribute("message", "Text has too many characters " + text.length() + "! (" + maxTextLength + " characters are permitted)");
+			return map;
+		}
 
+		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
+
+		if (codeFromSessionId != null && !codeFromSessionId.isEmpty()) {
+			if (code.equals(codeFromSessionId)) {
+				
+				mainService.updateText(request.getSession().getId(), text);
+				
+				logger.info(code + " - successfully updated the text.");
+				map.addAttribute("type", "success");
+				map.addAttribute("message", "Successfully updated your text!");
+				
+				return map;
+			} else {
+				logger.info(code + " - no authority to update text in this session!");
+				map.addAttribute("type", "fail");
+				map.addAttribute("message", "You do not have authority to update the text in this session!");
+				return map;
+			}
+		} else {
+			logger.info(code + " - updating text in an invalid session!");
+			map.addAttribute("type", "fail");
+			map.addAttribute("message", "Invalid session!");
+			return map;
+		}
+	}
+	
 	@GetMapping("/download/{code}/{index}")
 	public void download(@PathVariable String code, @PathVariable int index, HttpServletResponse response)
 			throws IOException {
