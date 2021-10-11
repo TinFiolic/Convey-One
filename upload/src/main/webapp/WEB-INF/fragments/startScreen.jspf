@@ -36,8 +36,9 @@
 	$("#joinSession").click(function() {
 		event.preventDefault(); 
 
-// 		TODO: check jel postoji taj kod i napravit da su poruke lijepe poppup i to
 		if($("#enterCode").val().length > 4 && $("#enterCode").val().length < 6)
 			location.replace("/join/" + $("#enterCode").val());
+		else
+			showPoppupMessage("Session code invalid!", "fail");
 	});
 </script>

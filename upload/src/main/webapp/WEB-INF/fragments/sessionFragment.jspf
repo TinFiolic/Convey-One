@@ -5,7 +5,11 @@
 			var uploadedFileCount = 0;
 			var uploadedFileSize = 0;
 		</script>
-				
+		
+		<c:if test="${isHost}">
+			<form action="/upload/${code}" class="dropzone dropZone" id="dropzoneForm"></form>
+		</c:if>
+		
 		<div id="uploadedFiles">
 			<c:if test="${not empty '${files}'}">
 				<c:forEach items="${files}" var="file" varStatus="loop">
@@ -46,18 +50,21 @@
 			</c:if>
 		</div>
 		
-		<p class="fileSizeAndCount"><span class="uploadedFileCount">0</span> / 10 files uploaded (<span class="uploadedFileSize">0</span> MB / 20 MB used up)</p>
+		<c:if test="${isHost}">
+			<p class="fileSizeAndCount"><span class="uploadedFileCount">0</span> / 10 files uploaded (<span class="uploadedFileSize">0</span> MB / 20 MB used up)</p>
 		
-		<br>
-						
-		<form action="/upload/${code}" class="dropzone dropZone" id="dropzoneForm"></form>
+			<br>
+		</c:if>
 		
 		<hr>
 		
 		<textarea id="uploadedText" maxlength="128" placeholder="You can paste/type anything here, press the button below, and the text will be uploaded to your session to access from another device!">${text}</textarea>
-		<p class="charCounter">0 / 128 characters used</p>
+	
+		<c:if test="${isHost}">
+			<p class="charCounter">0 / 128 characters used</p>
 		
-		<button class="button" id="updateText" style="padding: 0.1em 6.3em 0.3em;">update text</button>
+			<button class="button" id="updateText" style="padding: 0.1em 6.3em 0.3em;">update text</button>
+		</c:if>
 		
 		<hr>
 		
@@ -65,21 +72,23 @@
 			<div id="qrcode" class="column"></div>
 			
 			<div class="codeArea column">
-				<b style="color: #BD5D2D; font-size: 25px;">Your session code:</b> <br>
+				<b style="color: #BD5D2D; font-size: 25px;">Session code:</b> <br>
 				<span id="code">${code}</span> 
 				
 				<hr style="width: 100%;">	
 					
-				<b style="color: #BD5D2D; font-size: 25px;">Time left in session:</b> <br>
+				<b style="color: #BD5D2D; font-size: 25px;">Time left:</b> <br>
 				<div id="timer">5:00</div>
 			</div>
 		</div>
 		
-		<button class="button" id="copyLink" style="padding: 0.1em 7.4em 0.3em; margin-top: 0.4em; font-size: 20px;">copy your session link</button>
-		
-		<hr>
-		
-		<button class="button" id="endSession" style="padding: 0.1em 6.3em 0.3em;">end session</button>
+		<c:if test="${isHost}">
+			<button class="button" id="copyLink" style="padding: 0.1em 7.4em 0.3em; margin-top: 0.4em; font-size: 20px;">copy session link</button>
+			
+			<hr>
+			
+			<button class="button" id="endSession" style="padding: 0.1em 6.3em 0.3em;">end session</button>
+		</c:if>
 	</div>
 </div>
 

@@ -67,10 +67,9 @@ public class MainController {
 			modelAndView.addObject("text", mainService.getText(code));
 			modelAndView.addObject("timeLeft", mainService.getRemainingTime(code));
 		}
-
 		
 		modelAndView.addObject("sessionId", request.getSession().getId());
-		modelAndView.addObject("fromLink", false);
+		modelAndView.addObject("isHost", true);
 		return modelAndView;
 	}
 
@@ -85,12 +84,14 @@ public class MainController {
 				modelAndView.addObject("files", files);
 			
 			modelAndView.addObject("code", joinCode);
+			modelAndView.addObject("text", mainService.getText(joinCode));
+			modelAndView.addObject("timeLeft", mainService.getRemainingTime(joinCode));
 			
 			String code = mainService.codeForSessionIdExists(request.getSession().getId());
 			
-			if(code != null && !code.isEmpty() && code.equals(joinCode)) {
+			if(code != null && !code.isEmpty() && code.equals(joinCode)) 
 				modelAndView.addObject("isHost", true);
-			}
+
 		} else {
 			String code = mainService.codeForSessionIdExists(request.getSession().getId());
 			
@@ -101,12 +102,13 @@ public class MainController {
 					modelAndView.addObject("files", files);
 				
 				modelAndView.addObject("code", code);
+				modelAndView.addObject("text", mainService.getText(code));
+				modelAndView.addObject("timeLeft", mainService.getRemainingTime(code));
 				
 				modelAndView.addObject("isHost", true);
 			}
 		}
 
-		modelAndView.addObject("fromLink", true);
 		return modelAndView;
 	}
 
