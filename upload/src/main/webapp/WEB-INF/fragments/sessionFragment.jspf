@@ -21,20 +21,16 @@
 					</script>
 					
 					<div class="fileIcon">
-						 <a href="download/${code}/${loop.index}"> 
+						 <a class="downloadLink" href="download/${code}/${loop.index}"> 
 							<i class="fa fa-file"></i>
-						 </a>
 						 
-						 <br>
-						 
-						 <a href="download/${code}/${loop.index}">
-						 	<script> document.write(fileName + ' (' + fileSize + ' MB)'); uploadedFileCount++; uploadedFileSize+= Number(fileSize); </script> 
-						 </a>
-						 
-						 <br>
-						 
-						 <a href="download/${code}/${loop.index}">
-						 	<button type="button" class="btn btn-success" style="font-size: 14px; padding: 0.2em; width: 100%;">Download</button>					 
+							 <br>
+							 
+							 <script> document.write(fileName + ' (' + fileSize + ' MB)'); uploadedFileCount++; uploadedFileSize+= Number(fileSize); </script> 
+							 
+							 <br>
+							 
+							 <button type="button" class="btn btn-success" style="font-size: 14px; padding: 0.2em; width: 100%;">Download</button>					 
 						 </a>
 						 
 						 <c:if test="${isHost}">
@@ -99,6 +95,11 @@
 	$(".uploadedFileSize").text(uploadedFileSize);
 	$(".uploadedFileCount").text(uploadedFileCount);
 
+	//Set valid url addresses for download links
+	$(".downloadLink").each(function() {
+		$(this).attr("href", window.location.protocol + "//" + window.location.host + "/" + $(this).attr("href"));
+	});
+
 	//Timer
 	var secondsLeftInSession = Math.round(300 - ${timeLeft}/1000);
 	setTimeout(countdown,1000);
@@ -134,27 +135,29 @@
 	});
 
 	//Initialization of dropzone plugin
-	new Dropzone(document.body, { 
-	    url: "/upload/${code}", 
-	    clickable: "#dropzoneForm", 
-		addRemoveLinks : true,
-		maxFiles : 20,
-		maxFilesize : 20,
-		disablePreviews: true,
-		init : function() {
-			this.on("error", function(file, response) {
-				showPoppupMessage("Error uploading file " + file.name + "! " + response, "fail");
-				this.removeFile(file);
-			});
-			this.on("addedfile", function(file) {
-				showPoppupMessage("Uploading file " + file.name + " with size " + (file.size/1024/1024).toFixed(2) + " MB...", "success");
-			});
-		},
-      success: function(file, response) {
-			showPoppupMessage(response.message, response.type);
-			populateFiles(response.fileNames, response.fileSizes, false);
-        }
-	  });
+	if("${isHost}" === 'true') {
+		new Dropzone(document.body, { 
+		    url: "/upload/${code}", 
+		    clickable: "#dropzoneForm", 
+			addRemoveLinks : true,
+			maxFiles : 20,
+			maxFilesize : 20,
+			disablePreviews: true,
+			init : function() {
+				this.on("error", function(file, response) {
+					showPoppupMessage("Error uploading file " + file.name + "! " + response, "fail");
+					this.removeFile(file);
+				});
+				this.on("addedfile", function(file) {
+					showPoppupMessage("Uploading file " + file.name + " with size " + (file.size/1024/1024).toFixed(2) + " MB...", "success");
+				});
+			},
+	      success: function(file, response) {
+				showPoppupMessage(response.message, response.type);
+				populateFiles(response.fileNames, response.fileSizes, false);
+	        }
+		});
+	}
 
 	//On textbox state change
 	$('#uploadedText').on('keyup keydown', characterCount);
