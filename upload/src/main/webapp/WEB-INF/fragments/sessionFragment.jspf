@@ -37,9 +37,11 @@
 						 	<button type="button" class="btn btn-success" style="font-size: 14px; padding: 0.2em; width: 100%;">Download</button>					 
 						 </a>
 						 
-						 <br style="margin-bottom: 1em;">
+						 <c:if test="${isHost}">
+						 	<br style="margin-bottom: 1em;">
 						 
-						 <button type="button" class="btn btn-danger deleteFile" data-id="${loop.index}" style="font-size: 14px; padding: 0.2em; width: 100%;">Delete</button>
+						 	<button type="button" class="btn btn-danger deleteFile" data-id="${loop.index}" style="font-size: 14px; padding: 0.2em; width: 100%;">Delete</button>
+						 </c:if>
 					</div>
 
 				</c:forEach>
