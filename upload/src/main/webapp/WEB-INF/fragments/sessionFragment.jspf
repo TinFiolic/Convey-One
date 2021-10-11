@@ -135,29 +135,27 @@
 	});
 
 	//Initialization of dropzone plugin
-	if("${isHost}" === 'true') {
-		new Dropzone(document.body, { 
-		    url: "/upload/${code}", 
-		    clickable: "#dropzoneForm", 
-			addRemoveLinks : true,
-			maxFiles : 20,
-			maxFilesize : 20,
-			disablePreviews: true,
-			init : function() {
-				this.on("error", function(file, response) {
-					showPoppupMessage("Error uploading file " + file.name + "! " + response, "fail");
-					this.removeFile(file);
-				});
-				this.on("addedfile", function(file) {
-					showPoppupMessage("Uploading file " + file.name + " with size " + (file.size/1024/1024).toFixed(2) + " MB...", "success");
-				});
-			},
-	      success: function(file, response) {
-				showPoppupMessage(response.message, response.type);
-				populateFiles(response.fileNames, response.fileSizes, false);
-	        }
-		});
-	}
+	new Dropzone(document.body, { 
+	    url: "/upload/${code}", 
+	    clickable: "#dropzoneForm", 
+		addRemoveLinks : true,
+		maxFiles : 20,
+		maxFilesize : 20,
+		disablePreviews: true,
+		init : function() {
+			this.on("error", function(file, response) {
+				showPoppupMessage("Error uploading file " + file.name + "! " + response, "fail");
+				this.removeFile(file);
+			});
+			this.on("addedfile", function(file) {
+				showPoppupMessage("Uploading file " + file.name + " with size " + (file.size/1024/1024).toFixed(2) + " MB...", "success");
+			});
+		},
+      success: function(file, response) {
+			showPoppupMessage(response.message, response.type);
+			populateFiles(response.fileNames, response.fileSizes, false);
+        }
+	});
 
 	//On textbox state change
 	$('#uploadedText').on('keyup keydown', characterCount);
