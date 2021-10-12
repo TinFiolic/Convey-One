@@ -10,9 +10,8 @@
 		
 		<div class="wrapper">
 			<div class="formContent">
-				<div class="logo"></div>			
-				<h1 style="font-variant: small-caps; white-space:nowrap;">Houston, we have a problem.</h1>
-				<h3 style="font-variant: small-caps;">(404 - page not found)</h3>
+				<div class="logo"></div>
+				<h1 style="font-variant: small-caps;"><b>${code}</b> code is invalid!</h1>
 				<p>click anywhere to return to the main page</p>
 			</div>
 		</div>

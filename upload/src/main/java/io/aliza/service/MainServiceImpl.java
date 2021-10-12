@@ -135,6 +135,14 @@ public class MainServiceImpl implements MainService {
 		else
 			return null;
 	}
+	
+	@Override
+	public Boolean codeExists(String code) {
+		if(sessionIdCodeMap.containsValue(code)) 
+			return true;
+		else
+			return false;
+	}
 
 	@Override
 	public List<File> getFiles(String code) {

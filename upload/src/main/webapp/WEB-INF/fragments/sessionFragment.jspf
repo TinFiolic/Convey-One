@@ -6,9 +6,7 @@
 			var uploadedFileSize = 0;
 		</script>
 		
-		<c:if test="${isHost}">
-			<form action="/upload/${code}" class="dropzone dropZone" id="dropzoneForm"></form>
-		</c:if>
+		<form action="/upload/${code}" class="dropzone dropZone" id="dropzoneForm"></form>
 		
 		<div id="uploadedFiles">
 			<c:if test="${not empty '${files}'}">
@@ -62,6 +60,7 @@
 			<p class="charCounter">0 / 128 characters used</p>
 		
 			<button class="button" id="updateText" style="padding: 0.1em 6.3em 0.3em;">update text</button>
+			
 		</c:if>
 		
 		<hr>
@@ -95,6 +94,15 @@
 	$(".uploadedFileSize").text(uploadedFileSize);
 	$(".uploadedFileCount").text(uploadedFileCount);
 
+	if('${isHost}' === '') {
+		$("#dropzoneForm").attr("hidden", "hidden");
+		changePlaceholder();
+	}
+
+	if('${text}' === '') {
+		$("#uploadedText").val("");
+	}
+
 	//Set valid url addresses for download links
 	$(".downloadLink").each(function() {
 		$(this).attr("href", window.location.protocol + "//" + window.location.host + "/" + $(this).attr("href"));
@@ -113,8 +121,10 @@
 	   if(secondsLeftInSession < 30) 
 		   $("#timer").css("text-shadow", "0 0 1px #fff, 0 0 1px #fff, 0 0 2px #BA3B46, 0 0 3px #BA3B46, 0 0 4px #BA3B46, 0 0 5px #BA3B46, 0 0 6px #BA3B46");
 
-	   if(secondsLeftInSession < 1) 
+	   if(secondsLeftInSession < 1) {
 		   $("#endSession").click();
+		   location.reload();
+	   }
 
 	    var minutes = Math.floor(secondsLeftInSession / 60);
 	    var seconds = secondsLeftInSession - (minutes * 60);
@@ -133,7 +143,7 @@
 	    colorLight : "#121212",
 	    correctLevel : QRCode.CorrectLevel.H
 	});
-
+	
 	//Initialization of dropzone plugin
 	new Dropzone(document.body, { 
 	    url: "/upload/${code}", 
@@ -151,7 +161,7 @@
 				showPoppupMessage("Uploading file " + file.name + " with size " + (file.size/1024/1024).toFixed(2) + " MB...", "success");
 			});
 		},
-      success: function(file, response) {
+      success: function(file, response) { 
 			showPoppupMessage(response.message, response.type);
 			populateFiles(response.fileNames, response.fileSizes, false);
         }
@@ -262,6 +272,50 @@
 
 			$(".uploadedFileSize").text(uploadedFileSize);
 			$(".uploadedFileCount").text(uploadedFileCount);
+		}
+	}
+
+	function changePlaceholder() {
+		if($("#uploadedText").val().length < 1) {
+			
+			var quotes = [
+				'"No text was specified."',
+				'"What we do in life echoes in eternity."',
+				'"No - I am your father!"',
+				'"Are you not entertained?!"',
+				'"Lok\x27tar ogar."',
+				'"Zug zug!"',
+				'"Work work."',
+				'"Yes, milord."',
+				'"Right-o."',
+				'"Me not that kind of Orc!"',
+				'"No king rules forever, my son."',
+				'"WILSOOOOOON!"',
+				'"I\x27m going to make him an offer he can\x27t refuse."',
+				'"May the force be with you."',
+				'"Snakes... Why\x27d it have to be snakes?"',
+				'"You talking to me?"',
+				'"Choice is an illusion created between those with power and those without."',
+				'"I\x27m Batman!"',
+				'"Name\x27s Bond. James Bond."',
+				'"I\x27m walking here!"',
+				'"I\x27ll be back."',
+				'"Mama always said life was like a box of chocolates. You never know what you\x27re gonna get."',
+				'"Keep your friends close, but your enemies closer."',
+				'"Say hello to my little friend!"',
+				'"Elementary, my dear Watson."',
+				'"Here\x27s Johnny!"',
+				'"Hasta la vista, baby."',
+				'"You cannot be serious!"',
+				'"Why so serious!?"',
+				'"My precious."',
+				'"A martini. Shaken, not stirred."',
+				'"No text was specified."'
+			];
+
+			var random = Math.floor((Math.random() * quotes.length) + 1);
+			
+			$("#uploadedText").attr("placeholder", quotes[random]);			
 		}
 	}
 </script>

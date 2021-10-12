@@ -36,4 +36,6 @@ public interface MainService {
 	String getText(String code);
 
 	String getRemainingTime(String code);
+
+	Boolean codeExists(String code);
 }

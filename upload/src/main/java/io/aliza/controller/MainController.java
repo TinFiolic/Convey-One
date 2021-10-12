@@ -77,7 +77,14 @@ public class MainController {
 	public ModelAndView filesByCode(@PathVariable String joinCode, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("main");
 
-		if(joinCode != null && !joinCode.isEmpty()) {
+		if(joinCode != null && !joinCode.isEmpty()) {	
+			
+			if(!mainService.codeExists(joinCode)) {
+				ModelAndView modelAndViewBadCode = new ModelAndView("badcode");
+				modelAndViewBadCode.addObject("code", joinCode);
+				return modelAndViewBadCode;
+			}
+			
 			List<File> files = mainService.getFiles(joinCode);
 			
 			if(files != null && !files.isEmpty())
