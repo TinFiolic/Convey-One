@@ -6,6 +6,8 @@
 			var uploadedFileSize = 0;
 		</script>
 		
+		<div class="logo" style="width: padding-bottom: 0.2em; margin-top: -2em;"></div>
+		
 		<form action="/upload/${code}" id="dropzoneForm"></form>
 		
 		<div id="uploadedFiles">
@@ -113,7 +115,7 @@
 	
     if(secondsLeftInSession < 1) {
 	   $("#endSession").click();
-	   location.reload();
+	   window.location.replace(window.location.protocol + "//" + window.location.host + "/");
     }
    
 	setTimeout(countdown,1000);
@@ -129,7 +131,7 @@
 
 	   if(secondsLeftInSession < 1) {
 		   $("#endSession").click();
-		   location.reload();
+		   window.location.replace(window.location.protocol + "//" + window.location.host + "/");
 	   }
 
 	    var minutes = Math.floor(secondsLeftInSession / 60);
@@ -232,6 +234,11 @@
 		    	showPoppupMessage('Could not update text, server response: ' + textStatus + ': ' + errorThrown, "fail");
 		    }
 		});
+	});
+
+	//On logo click, go to homepage
+	$(".logo").click(function(){
+		window.location.replace(window.location.protocol + "//" + window.location.host + "/");
 	});
 
 	//Count number of characters in the textbox
