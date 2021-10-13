@@ -110,6 +110,12 @@
 
 	//Timer
 	var secondsLeftInSession = Math.round(300 - ${timeLeft}/1000);
+	
+    if(secondsLeftInSession < 1) {
+	   $("#endSession").click();
+	   location.reload();
+    }
+   
 	setTimeout(countdown,1000);
 
 	function countdown() {
@@ -283,7 +289,7 @@
 				'"What we do in life echoes in eternity."',
 				'"No - I am your father!"',
 				'"Are you not entertained?!"',
-				'"Lok\x27tar ogar."',
+				'"Who you gonna call? Ghostbusters!"',
 				'"Zug zug!"',
 				'"Work work."',
 				'"Yes, milord."',

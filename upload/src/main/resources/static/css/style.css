@@ -331,6 +331,10 @@ input[type="file"] {
 	left: 75%;
 	
 	width: 25%;
+	
+	overflow-y: auto;
+	
+	height: 100%;
 }
 
 .poppupMessage {

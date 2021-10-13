@@ -29,7 +29,7 @@
 		document.body.style.backgroundImage = "url('/img/dark_bg1.png')";
 		
 		function showPoppupMessage(message, type) {
-			var delayTime= 5000;
+			var delayTime = 5000;
 			var thisPoppup = poppupCounter;
 
 			$("#poppupMessageContainer").append('<div class="poppupMessage" id="' + thisPoppup + '"></div>');
