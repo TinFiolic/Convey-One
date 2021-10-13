@@ -225,23 +225,25 @@ public class MainServiceImpl implements MainService {
 
 	@Override
 	public void sessionTimer() {
-		for (Entry<String, Long> codeTime : codeTimeMap.entrySet()) {
-			String code = codeTime.getKey();
-			Long time = codeTime.getValue();
-
-			Long now = System.currentTimeMillis();
-
-			// If now is greater then time of code generation + 5 minutes
-			if (now > (time + (1000 * 300))) {
-				codeTimeMap.remove(code);
-				sessionIdCodeMap.values().remove(code);
-				codeSecretMap.remove(code);
-				codeTextMap.remove(code);
-
-				File file = new File(filesDirectory + code);
-				FileSystemUtils.deleteRecursively(file);
-
-				logger.info("Code " + code + " has expired. All files deleted.");
+		if(!codeTimeMap.isEmpty()) {
+			for (Entry<String, Long> codeTime : codeTimeMap.entrySet()) {
+				String code = codeTime.getKey();
+				Long time = codeTime.getValue();
+	
+				Long now = System.currentTimeMillis();
+	
+				// If now is greater then time of code generation + 5 minutes
+				if (now > (time + (1000 * 300))) {
+					codeTimeMap.remove(code);
+					sessionIdCodeMap.values().remove(code);
+					codeSecretMap.remove(code);
+					codeTextMap.remove(code);
+	
+					File file = new File(filesDirectory + code);
+					FileSystemUtils.deleteRecursively(file);
+	
+					logger.info("Code " + code + " has expired. All files deleted.");
+				}
 			}
 		}
 	}

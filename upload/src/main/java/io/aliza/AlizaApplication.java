@@ -1,6 +1,9 @@
 package io.aliza;
 
 import java.io.File;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +27,9 @@ public class AlizaApplication {
 
 	public static void main(String[] args) {
 		context = SpringApplication.run(AlizaApplication.class, args);
-
 		service = context.getBean(MainService.class);
+		
+		final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
 		// Delete files on startup
 		File file = new File(System.getProperty("user.dir") + "/files");
@@ -40,17 +44,13 @@ public class AlizaApplication {
 			logger.error("Could not delete folders at startup." + e.getMessage());
 		}
 
-		// Background timer for sessions on a separate thread
-		new Thread(() -> {
-			while (true) {
-				service.sessionTimer();
-				try {
-					Thread.sleep(10000); // Check every 10 seconds
-				} catch (InterruptedException e) {
-					logger.error("Timer error: " + e.getMessage());
-				}
-			}
-		}).start();
+		// Check timer every 10 seconds
+		executorService.scheduleAtFixedRate(AlizaApplication::runTimerCheck, 0, 10, TimeUnit.SECONDS);	
+	}
+	
+	private static void runTimerCheck() {
+		logger.info("Checking for sessions to delete...");
+		service.sessionTimer();
 	}
 
 }
