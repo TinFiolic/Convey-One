@@ -6,7 +6,7 @@
 			var uploadedFileSize = 0;
 		</script>
 		
-		<form action="/upload/${code}" class="dropzone dropZone" id="dropzoneForm"></form>
+		<form action="/upload/${code}" id="dropzoneForm"></form>
 		
 		<div id="uploadedFiles">
 			<c:if test="${not empty '${files}'}">
@@ -151,7 +151,7 @@
 	});
 	
 	//Initialization of dropzone plugin
-	new Dropzone(document.body, { 
+	var dropzone = new Dropzone(document.body, { 
 	    url: "/upload/${code}", 
 	    clickable: "#dropzoneForm", 
 		addRemoveLinks : true,
