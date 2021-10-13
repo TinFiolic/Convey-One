@@ -23,6 +23,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -224,7 +225,9 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
+	@Scheduled(fixedDelay = 10000L)
 	public void sessionTimer() {
+		logger.info("Checking for sessions to delete...");
 		if(!codeTimeMap.isEmpty()) {
 			for (Entry<String, Long> codeTime : codeTimeMap.entrySet()) {
 				String code = codeTime.getKey();

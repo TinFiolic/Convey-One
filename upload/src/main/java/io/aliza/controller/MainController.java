@@ -4,8 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +13,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.aliza.service.MainService;
 
@@ -70,6 +68,7 @@ public class MainController {
 		
 		modelAndView.addObject("sessionId", request.getSession().getId());
 		modelAndView.addObject("isHost", true);
+		
 		return modelAndView;
 	}
 
@@ -237,7 +236,8 @@ public class MainController {
 		if (codeFromSessionId != null && !codeFromSessionId.isEmpty()) {
 			if (code.equals(codeFromSessionId)) {
 				
-				mainService.updateText(request.getSession().getId(), text);
+				String encodedStr = (new String(Base64.encodeBase64(text.getBytes()), Charset.forName("ISO-8859-1")));
+				mainService.updateText(request.getSession().getId(), encodedStr);
 				
 				logger.info(code + " - successfully updated the text.");
 				map.addAttribute("type", "success");

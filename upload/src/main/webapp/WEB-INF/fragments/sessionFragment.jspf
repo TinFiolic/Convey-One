@@ -56,7 +56,7 @@
 		
 		<hr>
 		
-		<textarea id="uploadedText" maxlength="128" placeholder="You can paste/type anything here, press the button below, and the text will be uploaded to your session to access from another device!">${text}</textarea>
+		<textarea id="uploadedText" maxlength="128" placeholder="You can paste/type anything here, press the button below, and the text will be uploaded to your session to access from another device!"></textarea>
 	
 		<c:if test="${isHost}">
 			<p class="charCounter">0 / 128 characters used</p>
@@ -103,7 +103,11 @@
 
 	if('${text}' === '') {
 		$("#uploadedText").val("");
+	} else {
+		$("#uploadedText").val(atob('${text}'));
 	}
+
+	$('.charCounter').text($('#uploadedText').val().length + " / 128 characters used");
 
 	//Set valid url addresses for download links
 	$(".downloadLink").each(function() {
