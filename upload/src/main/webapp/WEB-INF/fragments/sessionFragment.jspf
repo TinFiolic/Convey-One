@@ -49,17 +49,17 @@
 		</div>
 		
 		<c:if test="${isHost}">
-			<p class="fileSizeAndCount"><span class="uploadedFileCount">0</span> / 10 files uploaded (<span class="uploadedFileSize">0</span> MB / 20 MB used up)</p>
+			<p class="fileSizeAndCount"><span class="uploadedFileCount">0</span> / 20 files uploaded (<span class="uploadedFileSize">0</span> MB / 50 MB used up)</p>
 		
 			<br>
 		</c:if>
 		
 		<hr>
 		
-		<textarea id="uploadedText" maxlength="128" placeholder="You can paste/type anything here, press the button below, and the text will be uploaded to your session to access from another device!"></textarea>
+		<textarea id="uploadedText" maxlength="512" placeholder="You can paste/type anything here, press the button below, and the text will be uploaded to your session to access from another device!"></textarea>
 	
 		<c:if test="${isHost}">
-			<p class="charCounter">0 / 128 characters used</p>
+			<p class="charCounter">0 / 512 characters used</p>
 		
 			<button class="button" id="updateText" style="padding: 0.1em 6.3em 0.3em;">update text</button>
 			
@@ -107,7 +107,7 @@
 		$("#uploadedText").val(atob('${text}'));
 	}
 
-	$('.charCounter').text($('#uploadedText').val().length + " / 128 characters used");
+	$('.charCounter').text($('#uploadedText').val().length + " / 512 characters used");
 
 	//Set valid url addresses for download links
 	$(".downloadLink").each(function() {
@@ -162,7 +162,7 @@
 	    clickable: "#dropzoneForm", 
 		addRemoveLinks : true,
 		maxFiles : 20,
-		maxFilesize : 20,
+		maxFilesize : 50,
 		disablePreviews: true,
 		init : function() {
 			this.on("error", function(file, response) {
@@ -247,7 +247,7 @@
 
 	//Count number of characters in the textbox
 	function characterCount() {
-	  $('.charCounter').text($(this).val().length + " / 128 characters used");
+	  $('.charCounter').text($(this).val().length + " / 512 characters used");
 	}
 
 	//Populate files area (list of file names and list of file sizes JSON as arguments)

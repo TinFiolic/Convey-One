@@ -36,10 +36,10 @@ public class MainController {
 
 	Logger logger = LoggerFactory.getLogger(MainController.class);
 
-	static Integer maxFileSize = 20971520;	// 20MB in bytes
-	static Integer maxFileAmount = 10;
-	static Integer maxFileNameLength = 30;
-	static Integer maxTextLength = 128;
+	static Integer maxFileSize = 50 * 1024 * 1024;	// 50MB in bytes
+	static Integer maxFileAmount = 20;
+	static Integer maxFileNameLength = 50;
+	static Integer maxTextLength = 512;
 	
 	@GetMapping("/error")
 	public ModelAndView errorPage(HttpServletRequest request) {
@@ -63,7 +63,7 @@ public class MainController {
 			modelAndView.addObject("code", code);
 			modelAndView.addObject("files", files);
 			modelAndView.addObject("text", mainService.getText(code));
-			modelAndView.addObject("timeLeft", mainService.getRemainingTime(code));
+			modelAndView.addObject("timeLeft", mainService.getTimeElapsed(code));
 		}
 		
 		modelAndView.addObject("sessionId", request.getSession().getId());
@@ -91,7 +91,7 @@ public class MainController {
 			
 			modelAndView.addObject("code", joinCode);
 			modelAndView.addObject("text", mainService.getText(joinCode));
-			modelAndView.addObject("timeLeft", mainService.getRemainingTime(joinCode));
+			modelAndView.addObject("timeLeft", mainService.getTimeElapsed(joinCode));
 			
 			String code = mainService.codeForSessionIdExists(request.getSession().getId());
 			
@@ -109,7 +109,7 @@ public class MainController {
 				
 				modelAndView.addObject("code", code);
 				modelAndView.addObject("text", mainService.getText(code));
-				modelAndView.addObject("timeLeft", mainService.getRemainingTime(code));
+				modelAndView.addObject("timeLeft", mainService.getTimeElapsed(code));
 				
 				modelAndView.addObject("isHost", true);
 			}

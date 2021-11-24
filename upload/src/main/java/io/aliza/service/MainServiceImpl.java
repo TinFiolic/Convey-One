@@ -217,7 +217,7 @@ public class MainServiceImpl implements MainService {
 	}
 	
 	@Override
-	public String getRemainingTime(String code) {
+	public String getTimeElapsed(String code) {
 		Long time = codeTimeMap.get(code);
 		Long now = System.currentTimeMillis();
 		
