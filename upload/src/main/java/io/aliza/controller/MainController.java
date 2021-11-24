@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -120,19 +121,18 @@ public class MainController {
 
 	@PostMapping("/upload/{code}")
 	public ModelMap upload(@PathVariable String code, @RequestParam("file") MultipartFile file,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws IOException {
 		
 		ModelMap map = new ModelMap();
 		
-		if (file.getSize() > maxFileSize) {
+		if (file.getBytes().length > maxFileSize) {
 			logger.info(code + " - uploaded file too big!");
 			map.addAttribute("type", "fail");
-			map.addAttribute("message", file.getOriginalFilename() + " file size is too big (" + file.getSize()/1024/1024 + " MB)!");
+			map.addAttribute("message", file.getOriginalFilename() + " file size is too big (" + file.getBytes().length/1024/1024 + " MB)!");
 			return map;
 		}
 
 		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
-		Long totalFileSizes = 0L;
 
 		if (codeFromSessionId != null && !codeFromSessionId.isEmpty()) {
 			if (code.equals(codeFromSessionId)) {
@@ -140,13 +140,12 @@ public class MainController {
 				// Check is max upload amount is exceeded in the session
 				List<File> uploadedFiles = mainService.getFiles(code);
 				
-				if(uploadedFiles != null && !uploadedFiles.isEmpty()) {
-					Long fileSizes = file.getSize(); // We start with the file currently being uploaded
+				if(file != null) {
+					Long fileSizes = Long.valueOf(file.getBytes().length); // We start with the file currently being uploaded
 					for(File fileIterator : uploadedFiles) {
 						fileSizes += fileIterator.length();
 					}
 					
-					totalFileSizes = fileSizes;
 					if(fileSizes > maxFileSize) {
 						logger.info(code + " -  total file sizes exceed session limit!");
 						map.addAttribute("type", "fail");
@@ -181,7 +180,7 @@ public class MainController {
 					
 					for(File fileIterator : mainService.getFiles(code)) {
 						fileNames.add(fileIterator.getName().substring(0, fileIterator.getName().length() - 10));
-						fileSizes.add(fileIterator.length());
+						fileSizes.add(Long.valueOf(Files.readAllBytes(fileIterator.toPath()).length));
 					}
 					
 					map.addAttribute("fileNames", fileNames);
@@ -205,7 +204,7 @@ public class MainController {
 
 	@GetMapping("/code")
 	public String generateCode(HttpServletRequest request) {		
-		request.getSession().setMaxInactiveInterval(300);
+		request.getSession().setMaxInactiveInterval(600);
 		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
 		
 		if(codeFromSessionId == null || codeFromSessionId.isEmpty()) {
@@ -236,8 +235,8 @@ public class MainController {
 		if (codeFromSessionId != null && !codeFromSessionId.isEmpty()) {
 			if (code.equals(codeFromSessionId)) {
 				
-				String encodedStr = (new String(Base64.encodeBase64(text.getBytes()), Charset.forName("ISO-8859-1")));
-				mainService.updateText(request.getSession().getId(), encodedStr);
+				text = text.replaceAll("'", "\"");
+				mainService.updateText(request.getSession().getId(), text);
 				
 				logger.info(code + " - successfully updated the text.");
 				map.addAttribute("type", "success");
@@ -315,7 +314,7 @@ public class MainController {
 					
 					for(File file : mainService.getFiles(code)) {
 						fileNames.add(file.getName().substring(0, file.getName().length() - 10));
-						fileSizes.add(file.length());
+						fileSizes.add(Long.valueOf(Files.readAllBytes(file.toPath()).length));
 					}
 					
 					map.addAttribute("fileNames", fileNames);

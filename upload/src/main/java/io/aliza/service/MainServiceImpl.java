@@ -64,11 +64,10 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
-	public String generateString(int length) {
+	public String generateRandomString(int length) {
 		Random random = new Random();
 		String code = "";
 
-		// Generate a random 5-digit alphanumeric code
 		for (int i = 0; i < length; i++) {
 			int randomChoose = random.nextInt(4 - 1) + 1;
 
@@ -94,14 +93,14 @@ public class MainServiceImpl implements MainService {
 	@Override
 	public String generateCode(String sessionId) {
 
-		String code = generateString(5);
+		String code = generateRandomString(5);
 
 		// If the map already contains the same code, generate new code
 		if (sessionIdCodeMap.containsValue(code))
 			generateCode(sessionId);
 
 		sessionIdCodeMap.put(sessionId, code);
-		codeSecretMap.put(code, generateString(32));
+		codeSecretMap.put(code, generateRandomString(32));
 		codeTimeMap.put(code, System.currentTimeMillis());
 
 		File file = new File(filesDirectory + code);
@@ -225,7 +224,7 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
-	@Scheduled(fixedDelay = 10000L)
+	@Scheduled(fixedDelay = 5000L)
 	public void sessionTimer() {
 		logger.info("Checking for sessions to delete...");
 		if(!codeTimeMap.isEmpty()) {
@@ -236,7 +235,7 @@ public class MainServiceImpl implements MainService {
 				Long now = System.currentTimeMillis();
 	
 				// If now is greater then time of code generation + 5 minutes
-				if (now > (time + (1000 * 300))) {
+				if (now > (time + (1000 * 600))) {
 					codeTimeMap.remove(code);
 					sessionIdCodeMap.values().remove(code);
 					codeSecretMap.remove(code);

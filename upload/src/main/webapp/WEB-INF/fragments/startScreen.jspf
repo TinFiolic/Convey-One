@@ -6,7 +6,7 @@
 
 		<hr>
 
-		<input type="text" id="enterCode" class="textbox"> <button class="button" id="joinSession" style="width: 7em;">join</button>
+		<input type="text" id="enterCode" class="textbox" style="font-family: 'Inconsolata', monospace;"> <button class="button" id="joinSession">join</button>
 
 		<div class="about">
 			<p><b>TRANSFEREE</b> is a free-to-use service which allows you to transfer your files and links securely 

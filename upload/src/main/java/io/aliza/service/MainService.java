@@ -25,8 +25,6 @@ public interface MainService {
 
 	void endSession(String code);
 
-	String generateString(int length);
-
 	byte[] fileProcessor(int cipherMode, String key, byte[] inputBytes, File outputFile, boolean needOutput);
 
 	List<File> listFilesForFolder(File folder);
@@ -38,4 +36,6 @@ public interface MainService {
 	String getTimeElapsed(String code);
 
 	Boolean codeExists(String code);
+
+	String generateRandomString(int length);
 }

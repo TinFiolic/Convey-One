@@ -21,6 +21,7 @@
 					</script>
 					
 					<div class="fileIcon">
+						 
 						 <a class="downloadLink" href="download/${code}/${loop.index}"> 
 							<i class="fa fa-file"></i>
 						 
@@ -28,9 +29,15 @@
 							 
 							 <script> document.write(fileName + ' (' + fileSize + ' MB)'); uploadedFileCount++; uploadedFileSize+= Number(fileSize); </script> 
 							 
-							 <br>
+							 <br style="margin-bottom: 0.5em;">
 							 
 							 <button type="button" class="btn btn-success" style="font-size: 14px; padding: 0.2em; width: 100%;">Download</button>					 
+						 </a>
+						 
+						 <br style="margin-bottom: 1em;">
+						 
+						 <a class="previewLink" href="preview/${code}/${loop.index}"> 						 
+							 <button type="button" class="btn btn-primary" style="font-size: 14px; padding: 0.2em; width: 100%;">Preview</button>					 
 						 </a>
 						 
 						 <c:if test="${isHost}">
@@ -77,12 +84,12 @@
 				<hr style="width: 100%;">	
 					
 				<b style="color: #BD5D2D; font-size: 25px;">Time left:</b> <br>
-				<div id="timer">5:00</div>
+				<div id="timer">10:00</div>
 			</div>
 		</div>
 		
 		<c:if test="${isHost}">
-			<button class="button" id="copyLink" style="padding: 0.1em 7.4em 0.3em; margin-top: 0.4em; font-size: 20px;">copy session link</button>
+			<button class="button" id="copyLink">copy session link</button>
 			
 			<hr>
 			
@@ -104,7 +111,7 @@
 	if('${text}' === '') {
 		$("#uploadedText").val("");
 	} else {
-		$("#uploadedText").val(atob('${text}'));
+		$("#uploadedText").val('${text}');
 	}
 
 	$('.charCounter').text($('#uploadedText').val().length + " / 512 characters used");
@@ -115,14 +122,14 @@
 	});
 
 	//Timer
-	var secondsLeftInSession = Math.round(300 - ${timeLeft}/1000);
+	var secondsLeftInSession = Math.round(600 - ${timeLeft}/1000);
 	
     if(secondsLeftInSession < 1) {
 	   $("#endSession").click();
 	   window.location.replace(window.location.protocol + "//" + window.location.host + "/");
     }
    
-	setTimeout(countdown,1000);
+	setTimeout(countdown, 1000);
 
 	function countdown() {
 		secondsLeftInSession--;
@@ -130,7 +137,7 @@
 	   if(secondsLeftInSession > 0)
 	      setTimeout(countdown, 1000);
 	   
-	   if(secondsLeftInSession < 30) 
+	   if(secondsLeftInSession < 60) 
 		   $("#timer").css("text-shadow", "0 0 1px #fff, 0 0 1px #fff, 0 0 2px #BA3B46, 0 0 3px #BA3B46, 0 0 4px #BA3B46, 0 0 5px #BA3B46, 0 0 6px #BA3B46");
 
 	   if(secondsLeftInSession < 1) {
@@ -262,8 +269,10 @@
 				fileElements = fileElements.concat(
 					'<div class="fileIcon"> <a href="download/${code}/' + iterator + '"> <i class="fa fa-file"></i> </a>' +
 					'<br> <a href="download/${code}/' + iterator + '">' + name + ' (' + Math.round((fileSizeList[iterator]/1024/1024) * 100) / 100 + ' MB)'  + '</a>' + 
-					'<br> <a href="download/${code}/' + iterator + '">' + 
+					'<br style="margin-bottom: 0.5em;"> <a href="download/${code}/' + iterator + '">' + 
 					'<button type="button" class="btn btn-success" style="font-size: 14px; padding: 0.2em; width: 100%;">Download</button> </a>' +
+					'<br style="margin-bottom: 1em;"> <a href="download/${code}/' + iterator + '">' + 
+					'<button type="button" class="btn btn-primary" style="font-size: 14px; padding: 0.2em; width: 100%;">Preview</button> </a>' + 
 					'<br style="margin-bottom: 1em;">' + 
 					'<button type="button" class="btn btn-danger deleteFile" data-id="' + iterator + '" style="font-size: 14px; padding: 0.2em; width: 100%;">Delete</button></div>');
 				
