@@ -95,7 +95,7 @@
 				
 				<div style="flex: 50%; padding-left: 2em;">
 					<b style="color: #BD5D2D; font-size: 20px;">Time left:</b> <br>
-					<div id="timer" style="margin-top: 0.15em;">10:00</div>
+					<div id="timerSmall" style="margin-top: 0.15em;">10:00</div>
 				</div>
 			</div>
 		</div>
@@ -149,8 +149,10 @@
 	   if(secondsLeftInSession > 0)
 	      setTimeout(countdown, 1000);
 	   
-	   if(secondsLeftInSession < 60) 
+	   if(secondsLeftInSession < 60) {
 		   $("#timer").css("text-shadow", "0 0 1px #fff, 0 0 1px #fff, 0 0 2px #BA3B46, 0 0 3px #BA3B46, 0 0 4px #BA3B46, 0 0 5px #BA3B46, 0 0 6px #BA3B46");
+		   $("#timerSmall").css("text-shadow", "0 0 1px #fff, 0 0 1px #fff, 0 0 2px #BA3B46, 0 0 3px #BA3B46, 0 0 4px #BA3B46, 0 0 5px #BA3B46, 0 0 6px #BA3B46");
+	   }
 
 	   if(secondsLeftInSession < 1) {
 		   $("#endSession").click();
@@ -160,10 +162,13 @@
 	    var minutes = Math.floor(secondsLeftInSession / 60);
 	    var seconds = secondsLeftInSession - (minutes * 60);
 
-	    if(seconds < 10)
+	    if(seconds < 10) {
 	    	$("#timer").text(minutes + ":0" + seconds);
-	    else
+	    	$("#timerSmall").text(minutes + ":0" + seconds);
+	    } else {
 	   		$("#timer").text(minutes + ":" + seconds);
+	   		$("#timerSmall").text(minutes + ":" + seconds);
+	    }
 	}
 	//Initialization of qrcode plugin
 	var qrcode = new QRCode(document.getElementById("qrcode"), {
