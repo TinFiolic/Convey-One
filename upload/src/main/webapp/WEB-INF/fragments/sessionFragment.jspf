@@ -6,7 +6,7 @@
 			var uploadedFileSize = 0;
 		</script>
 		
-		<div class="logo" style="width: padding-bottom: 0.2em; margin-top: -2em;"></div>
+		<div class="logo" style="margin-top: 0; padding-bottom: 1em;"></div>
 		
 		<form action="/upload/${code}" id="dropzoneForm"></form>
 		
@@ -67,7 +67,7 @@
 	
 		<c:if test="${isHost}">
 			<p class="charCounter">0 / 512 characters used</p>
-		
+
 			<button class="button" id="updateText" style="padding: 0.1em 6.3em 0.3em;">update text</button>
 			
 		</c:if>
@@ -86,10 +86,22 @@
 				<b style="color: #BD5D2D; font-size: 25px;">Time left:</b> <br>
 				<div id="timer">10:00</div>
 			</div>
+			
+			<div class="codeAreaSmall column" style="display: flex; padding-right: 2em;">
+				<div style="flex: 50%;">
+					<b style="color: #BD5D2D; font-size: 20px;">Session code:</b> <br>
+					<span id="code">${code}</span> 
+				</div>
+				
+				<div style="flex: 50%; padding-left: 2em;">
+					<b style="color: #BD5D2D; font-size: 20px;">Time left:</b> <br>
+					<div id="timer" style="margin-top: 0.15em;">10:00</div>
+				</div>
+			</div>
 		</div>
 		
 		<c:if test="${isHost}">
-			<button class="button" id="copyLink">copy session link</button>
+			<button class="button" id="copyLink">copy link</button>
 			
 			<hr>
 			
@@ -300,6 +312,20 @@
 			$(".uploadedFileCount").text(uploadedFileCount);
 		}
 	}
+
+	if($(window).width() > 768) {
+		$(".codeAreaSmall").hide();
+	} else {
+		$(".codeAreaSmall").show();
+	}
+	
+	$(window).resize(function() {
+		if($(window).width() > 768) {
+			$(".codeAreaSmall").hide();
+		} else {
+			$(".codeAreaSmall").show();
+		}
+	});
 
 	function changePlaceholder() {
 		if($("#uploadedText").val().length < 1) {

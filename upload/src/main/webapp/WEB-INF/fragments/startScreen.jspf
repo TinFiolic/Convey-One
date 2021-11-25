@@ -1,6 +1,6 @@
 <div class="wrapper">
 	<div class="formContent">
-		<div class="logo"></div>
+		<div class="logo" style="margin-top: 0; padding-bottom: 1em;"></div>
 		
 		<button class="button" id="newSession" style="padding: 0.1em 4.3em 0.3em;">start a new session</button>
 
