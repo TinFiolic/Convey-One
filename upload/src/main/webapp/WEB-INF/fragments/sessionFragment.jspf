@@ -84,7 +84,7 @@
 				<hr style="width: 100%;">	
 					
 				<b style="color: #BD5D2D; font-size: 25px;">Time left:</b> <br>
-				<div id="timer">10:00</div>
+				<div id="timer" class="timer">10:00</div>
 			</div>
 			
 			<div class="codeAreaSmall column" style="display: flex; padding-right: 2em;">
@@ -95,7 +95,7 @@
 				
 				<div style="flex: 50%; padding-left: 2em;">
 					<b style="color: #BD5D2D; font-size: 20px;">Time left:</b> <br>
-					<div id="timerSmall" style="margin-top: 0.15em;">10:00</div>
+					<div id="timerSmall" class="timer" style="margin-top: 0.15em;">10:00</div>
 				</div>
 			</div>
 		</div>

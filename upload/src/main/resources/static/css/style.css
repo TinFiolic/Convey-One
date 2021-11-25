@@ -227,7 +227,7 @@ a:active {
     color: inherit; 
 }
 
-#timer {
+.timer {
 	font-size: 45px; 
 	font-weight: bold;
 		
