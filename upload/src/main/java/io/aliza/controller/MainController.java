@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,7 +125,6 @@ public class MainController {
 			HttpServletRequest request) throws IOException {
 		
 		ModelMap map = new ModelMap();
-		
 		if (file.getBytes().length > maxFileSize) {
 			logger.info(code + " - uploaded file too big!");
 			map.addAttribute("type", "fail");
@@ -165,6 +165,13 @@ public class MainController {
 						logger.info(code + " - file name is too long!");
 						map.addAttribute("type", "fail");
 						map.addAttribute("message", "Name of uploaded file is too long (" + file.getOriginalFilename().length() + " characters)! Maximum allowed is " + maxFileNameLength + ".");
+						return map;
+					}
+					
+					if(file.getOriginalFilename().contains("'")) {
+						logger.info(code + " - file name contains forbidden character (')!");
+						map.addAttribute("type", "fail");
+						map.addAttribute("message", "Name of the uploaded file contains special character (') (" + file.getOriginalFilename() + ")! Rename your file!");
 						return map;
 					}
 				}

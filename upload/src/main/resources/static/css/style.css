@@ -414,10 +414,7 @@ sup:hover {
 	    border-radius: 4px;
 	    
 	    transition: background-color 0.3s, color 0.3s;
-	    
-	    position: absolute;
-	    top: 200px;
-	    bottom: 200px;
+
 	}
 	
 	.textbox {

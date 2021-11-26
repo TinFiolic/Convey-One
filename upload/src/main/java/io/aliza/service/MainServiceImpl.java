@@ -53,11 +53,8 @@ public class MainServiceImpl implements MainService {
 
 		// Before saving the file, translate to plain text and encode, then encrypt
 		try {
-			byte[] fileBytes = Base64.encodeBase64(file.getBytes(), true);
-			fileProcessor(Cipher.ENCRYPT_MODE, codeSecretMap.get(code), fileBytes,
-					new File(filesDirectory + code + "/" + file.getOriginalFilename() + ".encrypted"), true);
-			FileSystemUtils
-					.deleteRecursively(new File(filesDirectory + code + "/" + file.getOriginalFilename() + ".txt"));
+			fileProcessor(Cipher.ENCRYPT_MODE, codeSecretMap.get(code), file.getBytes(), new File(filesDirectory + code + "/" + file.getOriginalFilename() + ".encrypted"), true);
+			FileSystemUtils.deleteRecursively(new File(filesDirectory + code + "/" + file.getOriginalFilename() + ".txt"));
 		} catch (Exception e) {
 			logger.error("Upload failure: " + e.getMessage());
 		}
@@ -163,7 +160,7 @@ public class MainServiceImpl implements MainService {
 					Files.readAllBytes(file.toPath()),
 					new File(folder + "/" + file.getName().substring(0, file.getName().length() - 10)), false);
 
-			byteStringMap.put(Base64.decodeBase64(fileBytes),
+			byteStringMap.put(fileBytes,
 					file.getName().substring(0, file.getName().length() - 10));
 
 			return byteStringMap;
