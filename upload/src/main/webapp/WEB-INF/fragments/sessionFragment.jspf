@@ -61,6 +61,12 @@
 			<br>
 		</c:if>
 		
+		<c:if test="${!isHost}">
+			<p class="fileSizeAndCount">Refresh the site if new files have been added!</p>
+		
+			<br>
+		</c:if>
+		
 		<hr>
 		
 		<textarea id="uploadedText" maxlength="512" placeholder="You can paste/type anything here, press the button below, and the text will be uploaded to your session to access from another device!"></textarea>
