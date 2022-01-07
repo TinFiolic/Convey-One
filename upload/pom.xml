@@ -17,7 +17,7 @@
 	<description>File Upload App</description>
 
 	<properties>
-		<start-class>one.convey.ConveyOneApplicaion</start-class>
+		<start-class>one.convey.ConveyOneApplication</start-class>
 		<java.version>1.8</java.version>
 	</properties>
 
