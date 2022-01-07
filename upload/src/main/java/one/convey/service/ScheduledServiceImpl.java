@@ -58,6 +58,13 @@ public class ScheduledServiceImpl implements ScheduledService {
 	}
 	
 	@Override
+	@Scheduled(fixedDelay = 600000L)
+	public void clearUserHistory() {
+		logger.info("Clearing user history...");
+		mainServiceImpl.sessionIdCodeHistoryMap.clear();
+	}
+	
+	@Override
 	@PreDestroy
 	public void onShutdown() {
 		logger.info("Shutting down and deleting sessions...");

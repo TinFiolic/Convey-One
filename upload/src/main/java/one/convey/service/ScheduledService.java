@@ -8,4 +8,6 @@ public interface ScheduledService {
 
 	void clearAdditionalLists();
 
+	void clearUserHistory();
+
 }
