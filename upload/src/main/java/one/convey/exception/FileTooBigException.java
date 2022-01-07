@@ -1,4 +1,4 @@
-package io.aliza.exception;
+package one.convey.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

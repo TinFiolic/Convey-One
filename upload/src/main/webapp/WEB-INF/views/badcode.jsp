@@ -12,7 +12,12 @@
 			<div class="formContent">
 				<div class="logo"></div>
 				<h1 style="font-variant: small-caps;"><b>${code}</b> code is invalid!</h1>
-				<p>click anywhere to return to the main page</p>
+				<c:if test="${tooManyTries}">
+					<br>
+					<h3 style="font-variant: small-caps;">Too many failed attempts. <br> Please, wait for a minute and try again.</h3>
+				    <br>
+				</c:if>
+				<p style="font-variant: small-caps;">click anywhere to return to the main page</p>
 			</div>
 		</div>
 	

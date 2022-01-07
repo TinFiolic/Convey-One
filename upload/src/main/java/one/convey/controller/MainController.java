@@ -1,4 +1,4 @@
-package io.aliza.controller;
+package one.convey.controller;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import io.aliza.service.MainService;
+import one.convey.service.MainService;
 
 @RestController
 public class MainController {
@@ -42,6 +42,8 @@ public class MainController {
 	static Integer maxFileAmount = 20;
 	static Integer maxFileNameLength = 50;
 	static Integer maxTextLength = 512;
+	static Integer maxNumberOfRequests = 100;	// Maximum number of requests per user per 10 minutes
+	static Integer maxNumberOfGuesses = 10;	// Maximum number of guesses of code per user per 2 minutes
 	
 	@GetMapping("/error")
 	public ModelAndView errorPage(HttpServletRequest request) {
@@ -77,44 +79,67 @@ public class MainController {
 	@GetMapping("/join/{joinCode}")
 	public ModelAndView filesByCode(@PathVariable String joinCode, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("main");
+		
+		Integer numberOfAttempts = mainService.userCodeGuessAmount(request.getSession().getId(), false);
+		
+		if(numberOfAttempts < maxNumberOfGuesses) {
 
-		if(joinCode != null && !joinCode.isEmpty()) {	
-			
-			if(!mainService.codeExists(joinCode)) {
-				ModelAndView modelAndViewBadCode = new ModelAndView("badcode");
-				modelAndViewBadCode.addObject("code", joinCode);
-				return modelAndViewBadCode;
-			}
-			
-			List<File> files = mainService.getFiles(joinCode);
-			
-			if(files != null && !files.isEmpty())
-				modelAndView.addObject("files", files);
-			
-			modelAndView.addObject("code", joinCode);
-			modelAndView.addObject("text", mainService.getText(joinCode));
-			modelAndView.addObject("timeLeft", mainService.getTimeElapsed(joinCode));
-			
-			String code = mainService.codeForSessionIdExists(request.getSession().getId());
-			
-			if(code != null && !code.isEmpty() && code.equals(joinCode)) 
-				modelAndView.addObject("isHost", true);
-
-		} else {
-			String code = mainService.codeForSessionIdExists(request.getSession().getId());
-			
-			if(code != null && !code.isEmpty()) {			
-				List<File> files = mainService.getFiles(code);
+			if(joinCode != null && !joinCode.isEmpty()) {	
+				
+				if(!mainService.codeExists(joinCode)) {
+					ModelAndView modelAndViewBadCode = new ModelAndView("badcode");
+					modelAndViewBadCode.addObject("code", joinCode);
+					
+					Integer numberOfAttemptsFailed = mainService.userCodeGuessAmount(request.getSession().getId(), true);
+	
+					if(numberOfAttemptsFailed > maxNumberOfGuesses) {
+						logger.info(request.getSession().getId() + " - too many code tries!");
+						modelAndViewBadCode.addObject("tooManyTries", true);
+					}
+					
+					return modelAndViewBadCode;
+				}
+				
+				mainService.userEnteredCode(request.getSession().getId(), joinCode, true);
+				
+				List<File> files = mainService.getFiles(joinCode);
 				
 				if(files != null && !files.isEmpty())
 					modelAndView.addObject("files", files);
 				
-				modelAndView.addObject("code", code);
-				modelAndView.addObject("text", mainService.getText(code));
-				modelAndView.addObject("timeLeft", mainService.getTimeElapsed(code));
+				modelAndView.addObject("code", joinCode);
+				modelAndView.addObject("text", mainService.getText(joinCode));
+				modelAndView.addObject("timeLeft", mainService.getTimeElapsed(joinCode));
 				
-				modelAndView.addObject("isHost", true);
+				String code = mainService.codeForSessionIdExists(request.getSession().getId());
+				
+				if(code != null && !code.isEmpty() && code.equals(joinCode)) 
+					modelAndView.addObject("isHost", true);
+	
+			} else {
+				String code = mainService.codeForSessionIdExists(request.getSession().getId());
+				
+				if(code != null && !code.isEmpty()) {			
+					List<File> files = mainService.getFiles(code);
+					
+					if(files != null && !files.isEmpty())
+						modelAndView.addObject("files", files);
+					
+					modelAndView.addObject("code", code);
+					modelAndView.addObject("text", mainService.getText(code));
+					modelAndView.addObject("timeLeft", mainService.getTimeElapsed(code));
+					
+					modelAndView.addObject("isHost", true);
+				}
 			}
+		} else {
+			ModelAndView modelAndViewBadCode = new ModelAndView("badcode");
+			logger.info(request.getSession().getId() + " - too many code tries!");
+			
+			modelAndViewBadCode.addObject("code", joinCode);
+			modelAndViewBadCode.addObject("tooManyTries", true);
+			
+			return modelAndViewBadCode;
 		}
 
 		return modelAndView;
@@ -216,6 +241,9 @@ public class MainController {
 		
 		if(codeFromSessionId == null || codeFromSessionId.isEmpty()) {
 			String code = mainService.generateCode(request.getSession().getId());
+			
+			mainService.userEnteredCode(request.getSession().getId(), code, true);
+			
 			logger.info(code + " - generation a new session!");
 			return code;
 		} else {
@@ -265,10 +293,19 @@ public class MainController {
 	}
 	
 	@GetMapping("/download/{code}/{index}")
-	public void download(@PathVariable String code, @PathVariable int index, HttpServletResponse response)
+	public ModelMap download(@PathVariable String code, @PathVariable int index, HttpServletResponse response, HttpServletRequest request)
 			throws IOException {
 
+		ModelMap map = new ModelMap();
+		
+		List<String> listOfUserCodes = mainService.userEnteredCode(request.getSession().getId(), null, false);
 		Map<byte[], String> byteStringMap = mainService.getFile(index, code);
+		
+		if(!listOfUserCodes.contains(code) || byteStringMap == null) {
+			map.addAttribute("type", "fail");
+			map.addAttribute("message", "Invalid session!");
+			return map;
+		}
 
 		byte[] file = null;
 		String fileName = null;
@@ -300,6 +337,9 @@ public class MainController {
 		outputStream.close();
 		
 		logger.info(code + " - a file is being downloaded.");
+		map.addAttribute("type", "success");
+		map.addAttribute("message", "File is being downloaded...");
+		return map;
 	}
 
 	@GetMapping("/delete/{code}/{index}")

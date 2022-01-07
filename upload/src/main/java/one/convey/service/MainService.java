@@ -1,4 +1,4 @@
-package io.aliza.service;
+package one.convey.service;
 
 import java.io.File;
 import java.util.List;
@@ -19,8 +19,6 @@ public interface MainService {
 
 	Map<byte[], String> getFile(int index, String code);
 
-	void sessionTimer();
-
 	void deleteFile(int index, String code);
 
 	void endSession(String code);
@@ -38,4 +36,8 @@ public interface MainService {
 	Boolean codeExists(String code);
 
 	String generateRandomString(int length);
+
+	Integer userCodeGuessAmount(String sessionId, boolean hasUserTriedAnotherCode);
+
+	List<String> userEnteredCode(String sessionId, String code, boolean write);
 }

@@ -1,4 +1,4 @@
-package io.aliza.service;
+package one.convey.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,6 +8,7 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +34,21 @@ public class MainServiceImpl implements MainService {
 
 	static String filesDirectory = System.getProperty("user.dir") + "/files/";
 
+	//Host session id and its code
 	Map<String, String> sessionIdCodeMap = new HashMap<>();
+	
 	Map<String, String> codeSecretMap = new HashMap<>();
 	Map<String, Long> codeTimeMap = new HashMap<>();
 	Map<String, String> codeTextMap = new HashMap<>();
+	
+	//Number of requests a user has performed in the last 10 minutes
+	Map<String, Integer> sessionIdRequestsMap = new HashMap<>();
+	
+	//Number of guesses of code a user has tried in the last 2 minutes
+	Map<String, Integer> sessionIdGuessesMap = new HashMap<>();
+	
+	//Has a user (session id) ever entered a certain code before (list of codes)
+	Map<String, List<String>> sessionIdCodeHistoryMap = new HashMap<>();
 
 	static Logger logger = LoggerFactory.getLogger(MainServiceImpl.class);
 
@@ -85,6 +97,17 @@ public class MainServiceImpl implements MainService {
 		}
 
 		return code;
+	}
+	
+	@Override
+	public Integer userCodeGuessAmount(String sessionId, boolean hasUserTriedAnotherCode) {
+		if(!sessionIdGuessesMap.containsKey(sessionId))
+			sessionIdGuessesMap.put(sessionId, 0);
+		
+		if(hasUserTriedAnotherCode == true)
+			sessionIdGuessesMap.put(sessionId, sessionIdGuessesMap.get(sessionId) + 1);
+		
+		return sessionIdGuessesMap.get(sessionId);
 	}
 
 	@Override
@@ -140,6 +163,27 @@ public class MainServiceImpl implements MainService {
 		else
 			return false;
 	}
+	
+	@Override
+	public List<String> userEnteredCode(String sessionId, String code, boolean write) {
+		List<String> listOfCodes = sessionIdCodeHistoryMap.get(sessionId);
+		
+		if(listOfCodes == null)
+			listOfCodes = new ArrayList<String>();		
+		
+		if(write) {
+			if(listOfCodes.isEmpty()) {
+				sessionIdCodeHistoryMap.put(sessionId, Arrays.asList(code));
+			} else {
+				if(!listOfCodes.contains(code)) {
+					listOfCodes.add(code);
+					sessionIdCodeHistoryMap.put(sessionId, listOfCodes);
+				}
+			}
+		}
+		
+		return listOfCodes;
+	}
 
 	@Override
 	public List<File> getFiles(String code) {
@@ -150,7 +194,13 @@ public class MainServiceImpl implements MainService {
 	@Override
 	public Map<byte[], String> getFile(int index, String code) {
 		File folder = new File(filesDirectory + code);
-		File file = listFilesForFolder(folder).get(index);
+		File file;
+		
+		try {
+			file = listFilesForFolder(folder).get(index);
+		} catch(Exception e) {
+			return null;
+		}
 
 		Map<byte[], String> byteStringMap = new HashMap<>(); 
 
@@ -218,33 +268,6 @@ public class MainServiceImpl implements MainService {
 		Long now = System.currentTimeMillis();
 		
 		return String.valueOf(now - time);	
-	}
-
-	@Override
-	@Scheduled(fixedDelay = 5000L)
-	public void sessionTimer() {
-		logger.info("Checking for sessions to delete...");
-		if(!codeTimeMap.isEmpty()) {
-			for (Entry<String, Long> codeTime : codeTimeMap.entrySet()) {
-				String code = codeTime.getKey();
-				Long time = codeTime.getValue();
-	
-				Long now = System.currentTimeMillis();
-	
-				// If now is greater then time of code generation + 5 minutes
-				if (now > (time + (1000 * 600))) {
-					codeTimeMap.remove(code);
-					sessionIdCodeMap.values().remove(code);
-					codeSecretMap.remove(code);
-					codeTextMap.remove(code);
-	
-					File file = new File(filesDirectory + code);
-					FileSystemUtils.deleteRecursively(file);
-	
-					logger.info("Code " + code + " has expired. All files deleted.");
-				}
-			}
-		}
 	}
 
 	@Override

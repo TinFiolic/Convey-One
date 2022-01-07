@@ -1,4 +1,4 @@
-package io.aliza;
+package one.convey;
 
 import java.io.File;
 
@@ -12,14 +12,14 @@ import org.springframework.util.FileSystemUtils;
 
 @SpringBootApplication
 @EnableScheduling
-public class AlizaApplication {
+public class ConveyOneApplication {
 
-	static Logger logger = LoggerFactory.getLogger(AlizaApplication.class);
+	static Logger logger = LoggerFactory.getLogger(ConveyOneApplication.class);
 
 	static ApplicationContext context;
 
 	public static void main(String[] args) {
-		context = SpringApplication.run(AlizaApplication.class, args);
+		context = SpringApplication.run(ConveyOneApplication.class, args);
 		
 		// Delete files on startup
 		File file = new File(System.getProperty("user.dir") + "/files");
