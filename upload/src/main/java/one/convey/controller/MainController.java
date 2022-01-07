@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +13,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.util.codec.binary.Base64;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +81,7 @@ public class MainController {
 		
 		if(numberOfAttempts < maxNumberOfGuesses) {
 
-			if(joinCode != null && !joinCode.isEmpty()) {	
+			if(joinCode != null && !joinCode.isEmpty() && joinCode.length() == 5) {	
 				
 				if(!mainService.codeExists(joinCode)) {
 					ModelAndView modelAndViewBadCode = new ModelAndView("badcode");
@@ -207,8 +204,8 @@ public class MainController {
 				map.addAttribute("message", "Successfully uploaded a file!");
 				
 				if(mainService.getFiles(code) != null && !mainService.getFiles(code).isEmpty()) {		
-					List<String> fileNames = new ArrayList();
-					List<Long> fileSizes = new ArrayList();
+					List<String> fileNames = new ArrayList<>();
+					List<Long> fileSizes = new ArrayList<>();
 					
 					for(File fileIterator : mainService.getFiles(code)) {
 						fileNames.add(fileIterator.getName().substring(0, fileIterator.getName().length() - 10));
@@ -356,8 +353,8 @@ public class MainController {
 				mainService.deleteFile(index, code);
 				
 				if(mainService.getFiles(code) != null && !mainService.getFiles(code).isEmpty()) {		
-					List<String> fileNames = new ArrayList();
-					List<Long> fileSizes = new ArrayList();
+					List<String> fileNames = new ArrayList<>();
+					List<Long> fileSizes = new ArrayList<>();
 					
 					for(File file : mainService.getFiles(code)) {
 						fileNames.add(file.getName().substring(0, file.getName().length() - 10));

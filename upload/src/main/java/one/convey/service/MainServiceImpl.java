@@ -8,11 +8,9 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 
 import javax.crypto.BadPaddingException;
@@ -21,10 +19,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -173,7 +169,8 @@ public class MainServiceImpl implements MainService {
 		
 		if(write) {
 			if(listOfCodes.isEmpty()) {
-				sessionIdCodeHistoryMap.put(sessionId, Arrays.asList(code));
+				listOfCodes.add(code);
+				sessionIdCodeHistoryMap.put(sessionId, listOfCodes);
 			} else {
 				if(!listOfCodes.contains(code)) {
 					listOfCodes.add(code);

@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MainService {
