@@ -6,6 +6,6 @@ public interface ScheduledService {
 
 	void onShutdown();
 
-	void enterInvalidCode();
+	void clearAdditionalLists();
 
 }

@@ -35,7 +35,9 @@ public interface MainService {
 
 	String generateRandomString(int length);
 
-	Integer userCodeGuessAmount(String sessionId, boolean hasUserTriedAnotherCode);
+	Integer numberOfCodeGuessesMade(String sessionId, boolean write);
 
 	List<String> userEnteredCode(String sessionId, String code, boolean write);
+
+	Integer numberOfRequestsMade(String sessionId, boolean write);
 }

@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,8 @@ public class MainController {
 	static Integer maxFileAmount = 20;
 	static Integer maxFileNameLength = 50;
 	static Integer maxTextLength = 512;
-	static Integer maxNumberOfRequests = 100;	// Maximum number of requests per user per 10 minutes
-	static Integer maxNumberOfGuesses = 10;	// Maximum number of guesses of code per user per 2 minutes
+	static Integer maxNumberOfRequests = 25;		// Maximum number of requests per user per 60 seconds
+	static Integer maxNumberOfGuesses = 10;			// Maximum number of guesses of code per user per 60 seconds
 	
 	@GetMapping("/error")
 	public ModelAndView errorPage(HttpServletRequest request) {
@@ -77,7 +78,7 @@ public class MainController {
 	public ModelAndView filesByCode(@PathVariable String joinCode, HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("main");
 		
-		Integer numberOfAttempts = mainService.userCodeGuessAmount(request.getSession().getId(), false);
+		Integer numberOfAttempts = mainService.numberOfCodeGuessesMade(request.getSession().getId(), false);
 		
 		if(numberOfAttempts < maxNumberOfGuesses) {
 
@@ -87,7 +88,7 @@ public class MainController {
 					ModelAndView modelAndViewBadCode = new ModelAndView("badcode");
 					modelAndViewBadCode.addObject("code", joinCode);
 					
-					Integer numberOfAttemptsFailed = mainService.userCodeGuessAmount(request.getSession().getId(), true);
+					Integer numberOfAttemptsFailed = mainService.numberOfCodeGuessesMade(request.getSession().getId(), true);
 	
 					if(numberOfAttemptsFailed > maxNumberOfGuesses) {
 						logger.info(request.getSession().getId() + " - too many code tries!");
@@ -147,6 +148,14 @@ public class MainController {
 			HttpServletRequest request) throws IOException {
 		
 		ModelMap map = new ModelMap();
+		
+		if(mainService.numberOfRequestsMade(request.getSession().getId(), false) > maxNumberOfRequests) {
+			logger.info(code + " - too many requests!");
+			map.addAttribute("type", "fail");
+			map.addAttribute("message", "You are making too many upload/download requests! Please wait for a minute before trying again.");
+			return map;
+		}
+		
 		if (file.getBytes().length > maxFileSize) {
 			logger.info(code + " - uploaded file too big!");
 			map.addAttribute("type", "fail");
@@ -158,6 +167,8 @@ public class MainController {
 
 		if (codeFromSessionId != null && !codeFromSessionId.isEmpty()) {
 			if (code.equals(codeFromSessionId)) {
+				
+				mainService.numberOfRequestsMade(request.getSession().getId(), true);
 				
 				// Check is max upload amount is exceeded in the session
 				List<File> uploadedFiles = mainService.getFiles(code);
@@ -290,18 +301,22 @@ public class MainController {
 	}
 	
 	@GetMapping("/download/{code}/{index}")
-	public ModelMap download(@PathVariable String code, @PathVariable int index, HttpServletResponse response, HttpServletRequest request)
+	public ModelAndView download(@PathVariable String code, @PathVariable int index, HttpServletResponse response, HttpServletRequest request)
 			throws IOException {
 
-		ModelMap map = new ModelMap();
+		ModelAndView modelAndView = new ModelAndView("badcode");
 		
 		List<String> listOfUserCodes = mainService.userEnteredCode(request.getSession().getId(), null, false);
+		Integer numberOfRequests = mainService.numberOfRequestsMade(request.getSession().getId(), false);
 		Map<byte[], String> byteStringMap = mainService.getFile(index, code);
 		
 		if(!listOfUserCodes.contains(code) || byteStringMap == null) {
-			map.addAttribute("type", "fail");
-			map.addAttribute("message", "Invalid session!");
-			return map;
+			return modelAndView;
+		}
+		
+		if(numberOfRequests > maxNumberOfRequests) {
+			modelAndView.addObject("tooManyRequests", true);
+			return modelAndView;
 		}
 
 		byte[] file = null;
@@ -311,17 +326,17 @@ public class MainController {
 			file = key;
 			fileName = byteStringMap.get(key);
 		}
+		
+		BufferedInputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(file));
 
-		response.setContentType("application/octet-stream");
-
+		response.setContentType(URLConnection.guessContentTypeFromStream(inputStream));
+		
 		String headerKey = "Content-Disposition";
 		String headerValue = "attachment; filename=" + fileName;
 
 		response.setHeader(headerKey, headerValue);
-
+	
 		ServletOutputStream outputStream = response.getOutputStream();
-
-		BufferedInputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(file));
 
 		byte[] buffer = new byte[8192]; // 8Kb buffer
 		int bytesRead = -1;
@@ -333,10 +348,10 @@ public class MainController {
 		inputStream.close();
 		outputStream.close();
 		
+		mainService.numberOfRequestsMade(request.getSession().getId(), true);
+		
 		logger.info(code + " - a file is being downloaded.");
-		map.addAttribute("type", "success");
-		map.addAttribute("message", "File is being downloaded...");
-		return map;
+		return null;
 	}
 
 	@GetMapping("/delete/{code}/{index}")

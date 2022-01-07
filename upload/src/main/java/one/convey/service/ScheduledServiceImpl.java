@@ -51,9 +51,10 @@ public class ScheduledServiceImpl implements ScheduledService {
 	
 	@Override
 	@Scheduled(fixedDelay = 60000L)
-	public void enterInvalidCode() {
-		logger.info("Clearing invalid code list...");
+	public void clearAdditionalLists() {
+		logger.info("Clearing invalid code list and ddos protection list...");
 		mainServiceImpl.sessionIdGuessesMap.clear();
+		mainServiceImpl.sessionIdRequestsMap.clear();
 	}
 	
 	@Override

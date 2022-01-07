@@ -37,10 +37,10 @@ public class MainServiceImpl implements MainService {
 	Map<String, Long> codeTimeMap = new HashMap<>();
 	Map<String, String> codeTextMap = new HashMap<>();
 	
-	//Number of requests a user has performed in the last 10 minutes
+	//Number of download/upload requests a user has performed in the last 60 seconds
 	Map<String, Integer> sessionIdRequestsMap = new HashMap<>();
 	
-	//Number of guesses of code a user has tried in the last 2 minutes
+	//Number of guesses of code a user has tried in the last 60 seconds
 	Map<String, Integer> sessionIdGuessesMap = new HashMap<>();
 	
 	//Has a user (session id) ever entered a certain code before (list of codes)
@@ -96,14 +96,25 @@ public class MainServiceImpl implements MainService {
 	}
 	
 	@Override
-	public Integer userCodeGuessAmount(String sessionId, boolean hasUserTriedAnotherCode) {
+	public Integer numberOfCodeGuessesMade(String sessionId, boolean write) {
 		if(!sessionIdGuessesMap.containsKey(sessionId))
 			sessionIdGuessesMap.put(sessionId, 0);
 		
-		if(hasUserTriedAnotherCode == true)
+		if(write == true)
 			sessionIdGuessesMap.put(sessionId, sessionIdGuessesMap.get(sessionId) + 1);
 		
 		return sessionIdGuessesMap.get(sessionId);
+	}
+	
+	@Override
+	public Integer numberOfRequestsMade(String sessionId, boolean write) {
+		if(!sessionIdRequestsMap.containsKey(sessionId))
+			sessionIdRequestsMap.put(sessionId, 0);
+		
+		if(write == true)
+			sessionIdRequestsMap.put(sessionId, sessionIdRequestsMap.get(sessionId) + 1);
+		
+		return sessionIdRequestsMap.get(sessionId);
 	}
 
 	@Override
