@@ -71,6 +71,9 @@ public class MainController {
 		modelAndView.addObject("sessionId", request.getSession().getId());
 		modelAndView.addObject("isHost", true);
 		
+		modelAndView.addObject("numberOfSessions", mainService.getStatistics().get(0));
+		modelAndView.addObject("numberOfUsers", mainService.getStatistics().get(1));
+		
 		return modelAndView;
 	}
 

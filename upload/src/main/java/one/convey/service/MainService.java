@@ -40,4 +40,6 @@ public interface MainService {
 	List<String> userEnteredCode(String sessionId, String code, boolean write);
 
 	Integer numberOfRequestsMade(String sessionId, boolean write);
+
+	List<Integer> getStatistics();
 }

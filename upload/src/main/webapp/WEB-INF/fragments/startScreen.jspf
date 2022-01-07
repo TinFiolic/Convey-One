@@ -24,6 +24,13 @@
 			provide them with the logged IP address that has been used to upload a certain file name
 			on a certain session code and ID, as I cannot read/view file contents.</p>
 		</div>
+		
+		<hr>
+		
+		<div>
+			<p>Current number of sessions active: <b>${numberOfSessions}</b> <br> Number of users online in the last 10 minutes: <b>${numberOfUsers}</b></p>
+		</div>
+		
 	</div>
 </div>
 

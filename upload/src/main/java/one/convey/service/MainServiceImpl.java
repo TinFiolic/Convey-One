@@ -302,5 +302,13 @@ public class MainServiceImpl implements MainService {
 		}
 		return outputBytes;
 	}
+	
+	@Override
+	public List<Integer> getStatistics() {
+		List<Integer> statList = new ArrayList<>();
+		statList.add(codeTimeMap.size());
+		statList.add(sessionIdCodeHistoryMap.size());
+		return(statList);
+	}
 
 }
