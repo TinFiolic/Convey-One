@@ -45,8 +45,6 @@ public class ScheduledServiceImpl implements ScheduledService {
 				}
 			}
 		}
-		
-		//Ovdje napravit jos 2 checka, jedan za code entered amount svaka 2 min shemica i onda se cleara lista i jedan za overall requestove u 10 min
 	}
 	
 	@Override
@@ -55,13 +53,6 @@ public class ScheduledServiceImpl implements ScheduledService {
 		logger.info("Clearing invalid code list and ddos protection list...");
 		mainServiceImpl.sessionIdGuessesMap.clear();
 		mainServiceImpl.sessionIdRequestsMap.clear();
-	}
-	
-	@Override
-	@Scheduled(fixedDelay = 600000L)
-	public void clearUserHistory() {
-		logger.info("Clearing user history...");
-		mainServiceImpl.sessionIdCodeHistoryMap.clear();
 	}
 	
 	@Override
