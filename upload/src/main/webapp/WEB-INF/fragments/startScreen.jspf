@@ -28,7 +28,7 @@
 		<hr>
 		
 		<div>
-			<p>Current number of sessions active: <b>${numberOfSessions}</b> <br> Number of users online in the last 10 minutes: <b>${numberOfUsers}</b></p>
+			<p>Current number of sessions active: <b>${numberOfSessions}</b> <br> Number of users in the last 10 minutes: <b>${numberOfUsers}</b></p>
 		</div>
 		
 	</div>
