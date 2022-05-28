@@ -192,7 +192,7 @@
 	    clickable: "#dropzoneForm", 
 		addRemoveLinks : true,
 		maxFiles : 20,
-		maxFilesize : 50,
+		maxFilesize : 1000,
 		disablePreviews: true,
 		init : function() {
 			this.on("error", function(file, response) {
