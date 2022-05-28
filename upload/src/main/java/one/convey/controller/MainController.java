@@ -36,7 +36,7 @@ public class MainController {
 
 	Logger logger = LoggerFactory.getLogger(MainController.class);
 
-	static Integer maxFileSize = 50 * 1024 * 1024;	// 50MB in bytes
+	static Integer maxFileSize = 1024 * 1024 * 1024;	// 1000MB in bytes
 	static Integer maxFileAmount = 20;
 	static Integer maxFileNameLength = 50;
 	static Integer maxTextLength = 512;
