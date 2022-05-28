@@ -92,11 +92,11 @@ hr {
 
 .logo {
 	margin-top: 5em;
-	padding: 5.5em 0em 0 0;
+	padding: 10em 0em 0 0;
 	
 	background-size: contain;
 	background-repeat: no-repeat;
-	background-image: url("../img/logo2.png");
+	background-image: url("../img/logo.png");
 }
 
 .wrapper {
