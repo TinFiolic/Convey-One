@@ -56,7 +56,7 @@
 		</div>
 		
 		<c:if test="${isHost}">
-			<p class="fileSizeAndCount"><span class="uploadedFileCount">0</span> / 20 files uploaded (<span class="uploadedFileSize">0</span> MB / 50 MB used up)</p>
+			<p class="fileSizeAndCount"><span class="uploadedFileCount">0</span> / 20 files uploaded (<span class="uploadedFileSize">0</span> MB / 1000 MB used up)</p>
 		
 			<br>
 		</c:if>
