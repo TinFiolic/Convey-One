@@ -475,5 +475,18 @@ sup:hover {
 	.codeArea {
 		display: none;
 	}
+	
+	#poppupMessageContainer {
+	position: fixed;
+	top: 75%;
+	left: 0em;
+	
+	width: 100%;
+	
+	overflow-y: auto;
+	z-index: 10000;
+	
+	height: 100%;
+	}
 
 }
