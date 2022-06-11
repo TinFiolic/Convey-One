@@ -113,6 +113,10 @@
 			
 			<button class="button" id="endSession" style="padding: 0.1em 6.3em 0.3em;">end session</button>
 		</c:if>
+		
+		<div id="the-progress-div">
+		  <span class="the-progress-text"></span>
+		</div>
 	</div>
 </div>
 
@@ -208,6 +212,11 @@
 			populateFiles(response.fileNames, response.fileSizes, false);
         }
 	});
+
+	dropzone.on("totaluploadprogress", function (progress) {
+		  $("#the-progress-div").width(progress + '%');
+		  $(".the-progress-text").text(progress + '%');
+		});
 
 	//On textbox state change
 	$('#uploadedText').on('keyup keydown', characterCount);
