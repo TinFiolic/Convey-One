@@ -324,14 +324,14 @@
 		}
 	}
 
-	if($(window).width() > 768) {
+	if($(window).width() > 900) {
 		$(".codeAreaSmall").hide();
 	} else {
 		$(".codeAreaSmall").show();
 	}
 	
 	$(window).resize(function() {
-		if($(window).width() > 768) {
+		if($(window).width() > 900) {
 			$(".codeAreaSmall").hide();
 		} else {
 			$(".codeAreaSmall").show();

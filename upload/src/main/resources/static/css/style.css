@@ -396,7 +396,7 @@ sup:hover {
 }
 
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 900px) {
 	
 	.button {
 		background-color: #39383D;
