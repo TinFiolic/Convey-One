@@ -36,12 +36,13 @@ public class MainController {
 
 	Logger logger = LoggerFactory.getLogger(MainController.class);
 
-	static Integer maxFileSize = 1024 * 1024 * 150;	// 150MB in bytes
-	static Integer maxFileAmount = 20;
-	static Integer maxFileNameLength = 50;
-	static Integer maxTextLength = 512;
-	static Integer maxNumberOfRequests = 25;		// Maximum number of requests per user per 60 seconds
-	static Integer maxNumberOfGuesses = 10;			// Maximum number of guesses of code per user per 60 seconds
+	static Integer 	maxFileSize = 1024 * 1024 * 150;	// 150MB in bytes
+	static Integer 	maxFileAmount = 20;
+	static Integer 	maxFileNameLength = 50;
+	static Integer 	maxTextLength = 512;
+	static Integer 	maxNumberOfRequests = 25;		// Maximum number of requests per user per 60 seconds
+	static Integer 	maxNumberOfGuesses = 10;			// Maximum number of guesses of code per user per 60 seconds
+	static Double	version = 0.3;
 	
 	@GetMapping("/error")
 	public ModelAndView errorPage(HttpServletRequest request) {

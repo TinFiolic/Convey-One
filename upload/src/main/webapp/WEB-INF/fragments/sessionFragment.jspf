@@ -34,12 +34,6 @@
 							 <button type="button" class="btn btn-success" style="font-size: 14px; padding: 0.2em; width: 100%;">Download</button>					 
 						 </a>
 						 
-						 <br style="margin-bottom: 1em;">
-						 
-						 <a class="previewLink" href="preview/${code}/${loop.index}"> 						 
-							 <button type="button" class="btn btn-primary" style="font-size: 14px; padding: 0.2em; width: 100%;">Preview</button>					 
-						 </a>
-						 
 						 <c:if test="${isHost}">
 						 	<br style="margin-bottom: 1em;">
 						 
@@ -295,8 +289,6 @@
 					'<br style="margin-bottom: 0.5em;"> <a href="download/${code}/' + iterator + '">' + 
 					'<button type="button" class="btn btn-success" style="font-size: 14px; padding: 0.2em; width: 100%;">Download</button> </a>' +
 					'<br style="margin-bottom: 1em;"> <a href="download/${code}/' + iterator + '">' + 
-					'<button type="button" class="btn btn-primary" style="font-size: 14px; padding: 0.2em; width: 100%;">Preview</button> </a>' + 
-					'<br style="margin-bottom: 1em;">' + 
 					'<button type="button" class="btn btn-danger deleteFile" data-id="' + iterator + '" style="font-size: 14px; padding: 0.2em; width: 100%;">Delete</button></div>');
 				
 				uploadedFileCount++; 

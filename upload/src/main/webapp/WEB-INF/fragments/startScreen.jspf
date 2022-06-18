@@ -25,11 +25,7 @@
 			on a certain session code and ID, as I cannot read/view file contents.</p>
 		</div>
 		
-		<hr>
-		
-		<div>
-			<p>Current number of sessions active: <b>${numberOfSessions}</b> <br> Number of users since last restart: <b>${numberOfUsers}</b></p>
-		</div>
+		<br />
 		
 	</div>
 </div>

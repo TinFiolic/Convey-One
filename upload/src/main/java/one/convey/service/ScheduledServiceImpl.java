@@ -31,7 +31,7 @@ public class ScheduledServiceImpl implements ScheduledService {
 	
 				Long now = System.currentTimeMillis();
 	
-				// If now is greater then time of code generation + 5 minutes
+				// If now is greater then time of code generation + 10 minutes
 				if (now > (time + (1000 * 600))) {
 					mainServiceImpl.codeTimeMap.remove(code);
 					mainServiceImpl.sessionIdCodeMap.values().remove(code);

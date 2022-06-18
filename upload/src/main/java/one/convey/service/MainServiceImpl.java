@@ -213,7 +213,7 @@ public class MainServiceImpl implements MainService {
 		Map<byte[], String> byteStringMap = new HashMap<>(); 
 
 		try {
-			// Decrypt the file, then decode it and send bytes over for download
+			// Decrypt the file and send bytes over for download
 			byte[] fileBytes = fileProcessor(Cipher.DECRYPT_MODE, codeSecretMap.get(code),
 					Files.readAllBytes(file.toPath()),
 					new File(folder + "/" + file.getName().substring(0, file.getName().length() - 10)), false);
