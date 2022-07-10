@@ -92,7 +92,7 @@ public class MainController {
 				
 				if(!mainService.codeExists(joinCode)) {
 					ModelAndView modelAndViewBadCode = new ModelAndView("badcode");
-					modelAndViewBadCode.addObject("code", joinCode + " OVDJE PUCA");
+					modelAndViewBadCode.addObject("code", joinCode);
 					
 					Integer numberOfAttemptsFailed = mainService.numberOfCodeGuessesMade(request.getSession().getId(), true);
 	
