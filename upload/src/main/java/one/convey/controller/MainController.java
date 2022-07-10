@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,8 +42,8 @@ public class MainController {
 	static Integer 	maxFileAmount = 20;
 	static Integer 	maxFileNameLength = 50;
 	static Integer 	maxTextLength = 512;
-	static Integer 	maxNumberOfRequests = 25;		// Maximum number of requests per user per 60 seconds
-	static Integer 	maxNumberOfGuesses = 10;			// Maximum number of guesses of code per user per 60 seconds
+	static Integer 	maxNumberOfRequests = 25;		// Maximum number of requests per user per 10 mintues
+	static Integer 	maxNumberOfGuesses = 10;			// Maximum number of guesses of code per user per 10 minutes
 	static Double	version = 0.3;
 	
 	@GetMapping("/error")
@@ -90,7 +92,7 @@ public class MainController {
 				
 				if(!mainService.codeExists(joinCode)) {
 					ModelAndView modelAndViewBadCode = new ModelAndView("badcode");
-					modelAndViewBadCode.addObject("code", joinCode);
+					modelAndViewBadCode.addObject("code", joinCode + " OVDJE PUCA");
 					
 					Integer numberOfAttemptsFailed = mainService.numberOfCodeGuessesMade(request.getSession().getId(), true);
 	
@@ -247,7 +249,7 @@ public class MainController {
 	}
 
 	@GetMapping("/code")
-	public String generateCode(HttpServletRequest request) {		
+	public ResponseEntity<String> generateCode(HttpServletRequest request) {		
 		request.getSession().setMaxInactiveInterval(600);
 		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
 		
@@ -257,10 +259,11 @@ public class MainController {
 			mainService.userEnteredCode(request.getSession().getId(), code, true);
 			
 			logger.info(code + " - generation a new session!");
-			return code;
+			
+			return new ResponseEntity<>(code, HttpStatus.OK);
 		} else {
 			logger.info(codeFromSessionId + " - still an active session, therefore a new session cannot be created!");
-			return "";
+			return new ResponseEntity<>("", HttpStatus.FORBIDDEN);
 		}
 	}
 	
@@ -403,7 +406,7 @@ public class MainController {
 	}
 
 	@GetMapping("/endSession/{code}")
-	public Integer endSession(@PathVariable String code, HttpServletResponse response, HttpServletRequest request)
+	public ResponseEntity<Integer> endSession(@PathVariable String code, HttpServletResponse response, HttpServletRequest request)
 			throws IOException {
 
 		String codeFromSessionId = mainService.codeForSessionIdExists(request.getSession().getId());
@@ -413,14 +416,14 @@ public class MainController {
 				mainService.endSession(code);
 				logger.info(code + " - successfully ended a session.");
 				request.getSession().invalidate();
-				return 0;
+				return new ResponseEntity<>(0, HttpStatus.OK);
 			} else {
 				logger.info(code + " - no authority to end this session!");
-				return 1;
+				return new ResponseEntity<>(1, HttpStatus.UNAUTHORIZED);
 			}
 		} else {
 			logger.info(code + " - accessing an invalid session!");
-			return 2;
+			return new ResponseEntity<>(2, HttpStatus.NOT_FOUND);
 		}
 	}
 }

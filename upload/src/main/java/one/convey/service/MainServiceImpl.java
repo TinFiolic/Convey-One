@@ -37,10 +37,10 @@ public class MainServiceImpl implements MainService {
 	Map<String, Long> codeTimeMap = new HashMap<>();
 	Map<String, String> codeTextMap = new HashMap<>();
 	
-	//Number of download/upload requests a user has performed in the last 60 seconds
+	//Number of download/upload requests a user has performed in the last 10 minutes
 	Map<String, Integer> sessionIdRequestsMap = new HashMap<>();
 	
-	//Number of guesses of code a user has tried in the last 60 seconds
+	//Number of guesses of code a user has tried in the last 10 minutes
 	Map<String, Integer> sessionIdGuessesMap = new HashMap<>();
 	
 	//Has a user (session id) ever entered a certain code before (list of codes)
