@@ -317,7 +317,7 @@ public class MainController {
 		Integer numberOfRequests = mainService.numberOfRequestsMade(request.getSession().getId(), false);
 		Map<byte[], String> byteStringMap = mainService.getFile(index, code);
 		
-		if(!listOfUserCodes.contains(code) || byteStringMap == null) {
+		if(!listOfUserCodes.contains(code) || byteStringMap == null) { 
 			return modelAndView;
 		}
 		
